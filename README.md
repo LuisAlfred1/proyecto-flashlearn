@@ -1,59 +1,212 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📁 Proyecto FlashLearn
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Proyecto desarrollado con **Laravel**. Lee este README completo antes de empezar a trabajar.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📋 Tabla de contenido
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [Estructura de ramas](#-estructura-de-ramas)
+- [Configuración inicial](#-configuración-inicial-solo-la-primera-vez)
+- [Flujo de trabajo diario](#-flujo-de-trabajo-diario)
+- [Convención de commits](#-convención-de-commits)
+- [Reglas importantes](#-reglas-importantes)
+- [Solución de errores comunes](#-solución-de-errores-comunes)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🌿 Estructura de ramas
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+```
+main        ← Producción. NUNCA tocar directamente.
+develop     ← Rama de integración. Aquí llegan todos los Pull Requests.
+luis        ← Rama personal de Luis
+angel       ← Rama personal de angel
+harleth     ← Rama personal de harleth
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+> ⚠️ **Cada quien trabaja SIEMPRE en su propia rama.**
+> ⚠️ **Solo el coordinador (Luis) hace merge a `main`.**
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## ⚙️ Configuración inicial (solo la primera vez)
 
-### Premium Partners
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/LuisAlfredo1/proyecto-flashlearn.git
+cd proyecto-flashlearn
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+# 2. Instalar dependencias de PHP
+composer install
 
-## Contributing
+# 3. Instalar dependencias de Node
+npm install
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# 4. Crear tu archivo de entorno
+cp .env.example .env
 
-## Code of Conduct
+# 5. Generar la clave de la aplicación
+php artisan key:generate
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 6. Configurar tu base de datos en el archivo .env
+#    Edita estas líneas con tus datos locales:
+#    DB_DATABASE=nombre_tu_bd
+#    DB_USERNAME=tu_usuario
+#    DB_PASSWORD=tu_contraseña
 
-## Security Vulnerabilities
+# 7. Correr las migraciones
+php artisan migrate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 🔄 Flujo de trabajo diario
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Sigue estos pasos **cada vez** que vayas a trabajar en algo nuevo.
+
+### Paso 1 — Cambia a tu rama personal y actualízala
+
+```bash
+git checkout tu-nombre
+git pull origin tu-nombre
+```
+
+> Ejemplo si eres angel:
+> ```bash
+> git checkout angel
+> git pull origin angel
+> ```
+
+### Paso 2 — Sincroniza con develop por si hay cambios nuevos
+
+```bash
+git merge develop
+```
+
+> Esto evita que tu rama se quede atrás respecto al trabajo de los demás.
+
+### Paso 3 — Trabaja y haz commits frecuentes
+
+```bash
+# Ver qué archivos cambiaste
+git status
+
+# Agregar tus cambios
+git add .
+
+# Hacer commit con un mensaje descriptivo
+git commit -m "feat: descripción de lo que hiciste"
+```
+
+### Paso 4 — Sube tus cambios a GitHub
+
+```bash
+git push origin tu-nombre
+```
+
+### Paso 5 — Abre un Pull Request hacia develop
+
+1. Ve al repositorio en GitHub
+2. Haz clic en **"Compare & pull request"**
+3. ⚠️ Verifica que el destino sea **`develop`** (nunca `main`)
+4. Escribe una descripción clara de lo que hiciste
+5. Haz clic en **"Create pull request"**
+
+```
+tu-nombre ──────────→ develop ──────────→ main
+           (tú abres PR)      (Luis hace merge)
+```
+
+> ✅ Luis revisará, aprobará y hará el merge a `develop`.
+> ✅ Cuando haya suficientes cambios listos, Luis pasa `develop` a `main`.
+
+---
+
+## 💬 Convención de commits
+
+Usa este formato en todos tus commits:
+
+```
+tipo: descripción corta en minúsculas
+```
+
+| Tipo | Cuándo usarlo |
+|------|---------------|
+| `feat` | Nueva funcionalidad |
+| `fix` | Corrección de un bug |
+| `refactor` | Mejorar código sin cambiar funcionalidad |
+| `docs` | Cambios en documentación |
+| `style` | Formato, espacios (sin lógica) |
+| `chore` | Tareas de mantenimiento, dependencias |
+
+**Ejemplos:**
+```bash
+git commit -m "feat: crear modelo y migración de productos"
+git commit -m "fix: corregir validación en formulario de contacto"
+git commit -m "docs: actualizar instrucciones del README"
+```
+
+---
+
+## 🚫 Reglas importantes
+
+- ❌ **Nunca** hacer push directo a `main` o `develop`
+- ❌ **Nunca** trabajar en la rama de otro compañero
+- ❌ **Nunca** subir el archivo `.env` (ya está en `.gitignore`)
+- ✅ **Siempre** trabajar en tu rama personal
+- ✅ **Siempre** sincronizar con `develop` antes de ponerte a trabajar
+- ✅ **Siempre** el PR va hacia `develop`, nunca a `main`
+
+---
+
+## 🛠️ Solución de errores comunes
+
+### ❗ "Your local changes would be overwritten by merge"
+
+Tienes archivos locales sin commitear que entran en conflicto con el pull.
+
+```bash
+# Opción A: Guardar tus cambios temporalmente
+git stash
+git pull origin develop
+git stash pop
+
+# Opción B: Si no necesitas esos cambios locales
+git checkout -- nombre-del-archivo
+git pull origin develop
+```
+
+---
+
+### ❗ "Please tell me who you are" (primera vez con git)
+
+```bash
+git config --global user.email "tu@email.com"
+git config --global user.name "Tu Nombre"
+```
+
+---
+
+### ❗ Tengo conflictos al hacer merge con develop
+
+```bash
+# Git te marcará los archivos con conflicto
+# Ábrelos en tu editor, busca estas marcas y resuelve:
+
+tu código
+
+# Una vez resuelto:
+git add .
+git commit -m "merge: resolver conflictos con develop"
+```
+
+---
+
+## 👥 Equipo
+
+| Nombre | Rol | Rama |
+|--------|-----|------|
+| Luis Reyes     | Desarrollador | `luis` |
+| Ángel Flores   | Desarrollador | `angel` |
+| Harleth García | Desarrollador | `harleth` |
