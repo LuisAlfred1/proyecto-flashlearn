@@ -81,10 +81,11 @@ git pull origin tu-nombre
 ### Paso 2 — Sincroniza con develop por si hay cambios nuevos
 
 ```bash
-git merge develop
+git fetch origin
+git merge origin/develop
 ```
 
-> Esto evita que tu rama se quede atrás respecto al trabajo de los demás.
+> Esto trae los últimos cambios de develop desde GitHub y los integra en tu rama.
 
 ### Paso 3 — Trabaja y haz commits frecuentes
 
