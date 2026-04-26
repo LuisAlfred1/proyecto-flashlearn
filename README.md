@@ -87,6 +87,46 @@ git merge origin/develop
 
 > Esto trae los últimos cambios de develop desde GitHub y los integra en tu rama.
 
+### ⚠️ Paso 2.1 — Actualizar dependencias (si aplica)
+
+Después de sincronizar tu rama con `develop`, es posible que algún compañero haya agregado nuevas dependencias al proyecto.
+
+En ese caso, debes actualizar tu entorno local ejecutando:
+
+```bash
+# Dependencias de Laravel (PHP)
+composer install
+
+# Dependencias de frontend (Node.js: Tailwind, Vite, etc.)
+npm install
+
+# Compilar assets (CSS, JS)
+npm run dev
+```
+
+#### 🧠 ¿Cuándo es necesario?
+
+* Si se modificaron archivos como:
+
+  * `composer.json` o `composer.lock` → ejecutar `composer install`
+  * `package.json` o `package-lock.json` → ejecutar `npm install`
+* Si notas errores al correr el proyecto o faltan estilos → ejecuta ambos
+
+#### 💡 Recomendación
+
+Los compañeros deben avisar cuando instalen o actualicen dependencias en el proyecto, para que los demás sepan que necesitan actualizar su entorno.
+
+Si tienes dudas, puedes ejecutar todos los comandos sin problema:
+
+```bash
+composer install
+npm install
+npm run dev
+```
+
+Esto asegura que tu entorno esté completamente actualizado y ayuda a evitar errores inesperados.
+
+
 ### Paso 3 — Trabaja y haz commits frecuentes
 
 ```bash
