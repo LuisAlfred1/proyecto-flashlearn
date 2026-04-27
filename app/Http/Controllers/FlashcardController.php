@@ -13,8 +13,14 @@ class FlashcardController extends Controller
 
     public function generate(Request $request)
     {
+        $validated = $request->validate([
+            'tema' => 'required|string|max:100',
+            'language' => 'required|string|max:50',
+        ]);
+
         return response()->json([
-            'message' => 'Método generate funcionando'
+            'message' => 'Validación correcta',
+            'data' => $validated
         ]);
     }
 }
