@@ -25,14 +25,7 @@
     <x-navbar />
 
     {{-- ===================== CONTENIDO PRINCIPAL ===================== --}}
-    <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-
-        {{-- Page Header (opcional) --}}
-        @hasSection('header')
-            <div class="mb-8">
-                @yield('header')
-            </div>
-        @endif
+    <main class="flex-1 ">
 
         {{-- Slot principal --}}
         @yield('content')
@@ -40,16 +33,6 @@
     </main>
     {{-- =================== FIN CONTENIDO =================== --}}
 
-
-    {{-- ===================== FOOTER ===================== --}}
-    <footer class="mt-auto border-t border-zinc-200 bg-white">
-        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <p class="text-center text-sm text-zinc-400">
-                &copy; {{ date('Y') }} FlashLearn. Todos los derechos reservados.
-            </p>
-        </div>
-    </footer>
-    {{-- =================== FIN FOOTER =================== --}}
 </body>
 
 </html>
