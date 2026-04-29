@@ -8,7 +8,8 @@ class FlashcardController extends Controller
 {
     public function index()
     {
-        return response('FlashLearn backend funcionando');
+        //Ahora aqui retorna la vista de flashcards, que se encuentra en resources/views/pages/flashcards.blade.php
+        return view('pages.flashcards');
     }
 
     public function generate(Request $request)
