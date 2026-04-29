@@ -7,11 +7,12 @@ Proyecto desarrollado con **Laravel**. Lee este README completo antes de empezar
 ## 📋 Tabla de contenido
 
 - [Estructura de ramas](#-estructura-de-ramas)
-- [Configuración inicial](#-configuración-inicial-solo-la-primera-vez)
+- [Configuración inicial (solo la primera vez)](#️-configuración-inicial-solo-la-primera-vez)
 - [Flujo de trabajo diario](#-flujo-de-trabajo-diario)
 - [Convención de commits](#-convención-de-commits)
 - [Reglas importantes](#-reglas-importantes)
-- [Solución de errores comunes](#-solución-de-errores-comunes)
+- [Flujo para compartir variables de entorno en equipo (.env)](#-flujo-para-compartir-variables-de-entorno-en-equipo)
+- [Solución de errores comunes](#️-solución-de-errores-comunes)
 
 ---
 
@@ -198,6 +199,37 @@ git commit -m "docs: actualizar instrucciones del README"
 - ✅ **Siempre** trabajar en tu rama personal
 - ✅ **Siempre** sincronizar con `develop` antes de ponerte a trabajar
 - ✅ **Siempre** el PR va hacia `develop`, nunca a `main`
+
+---
+
+> [!NOTE]
+> ## 🔑 Flujo para compartir variables de entorno en equipo
+>
+> Como `.env` **nunca se sube a Git**, las variables nuevas se comparten así:
+>
+> **1. El compañero que agrega la variable** actualiza `.env.example` sin el valor real:
+> ```env
+> # .env.example
+> ANTHROPIC_API_KEY=
+> ```
+> Esto sí se sube a Git para que todos sepan que existe.
+>
+> **2. El valor real** se comparte por canal privado (WhatsApp, Discord, etc.):
+> ```env
+> ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxx
+> ```
+>
+> **3. Cada integrante** lo agrega manualmente en su `.env` local:
+> ```env
+> ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxx
+> ```
+>
+> **¿Cómo saber si te falta una variable?**
+> Después de cada `git pull` o `git merge`, compara tu `.env` con `.env.example`:
+> ```bash
+> cat .env.example
+> ```
+> Si ves algo que no tienes en tu `.env`, pídele el valor a tu compañero.
 
 ---
 
