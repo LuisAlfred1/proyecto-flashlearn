@@ -1,7 +1,7 @@
 {{-- resources/views/components/hero.blade.php --}}
 
-<div class="pt-16 md:pt-20 gradient">
-    <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 flex flex-wrap flex-col md:flex-row items-center">
+<div class="pt-16 md:pt-6 gradient">
+    <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 flex flex-wrap flex-col md:flex-row items-center">
         {{-- Columna izquierda --}}
         <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
             <p class="uppercase tracking-widest text-sm font-semibold text-white/80 w-full mb-2">
@@ -29,14 +29,14 @@
         </div>
 
         {{-- Columna derecha --}}
-        <div class="w-full md:w-3/5 py-6 text-center">
+        <div class="w-full md:w-3/5 py-12 text-center">
             <img class="w-full md:w-4/5 z-50 drop-shadow-2xl" src="{{ asset('images/hero.png') }}" alt="FlashLearn - Tarjetas de vocabulario con IA" />
         </div>
     </div>
 </div>
 
 {{-- Ola de transición --}}
-<div class="relative -mt-8 lg:-mt-32 overflow-hidden">
+<div class="relative -mt-8 lg:-mt-40 overflow-hidden">
     <svg viewBox="0 0 1428 174" xmlns="http://www.w3.org/2000/svg">
         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
             <g transform="translate(-2.000000, 44.000000)" fill="#fafafa" fill-rule="nonzero">

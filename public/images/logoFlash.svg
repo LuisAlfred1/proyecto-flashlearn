@@ -1,0 +1,21 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="100" cy="100" r="90" fill="#f0fdf4" />
+  
+  <g id="logo-core">
+    <path d="M70 70 Q40 70 40 100 Q40 130 70 130 L70 150 L95 130 L110 130" 
+          fill="none" stroke="#3bc569" stroke-width="6" stroke-linecap="round"/>
+    
+    <path d="M130 70 Q160 70 160 100 Q160 130 130 130 L130 150 L105 130 L90 130" 
+          fill="none" stroke="#2a914a" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
+    
+    <circle cx="100" cy="95" r="12" fill="#1b5e20" />
+    
+    <line x1="100" y1="95" x2="75" y2="85" stroke="#1b5e20" stroke-width="3" />
+    <line x1="100" y1="95" x2="125" y2="85" stroke="#1b5e20" stroke-width="3" />
+    <line x1="100" y1="95" x2="100" y2="120" stroke="#1b5e20" stroke-width="3" />
+    
+    <circle cx="75" cy="85" r="4" fill="#58d68d" />
+    <circle cx="125" cy="85" r="4" fill="#58d68d" />
+    <circle cx="100" cy="120" r="4" fill="#58d68d" />
+  </g>
+</svg>
