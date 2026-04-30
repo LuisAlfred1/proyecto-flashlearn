@@ -8,7 +8,6 @@ class FlashcardController extends Controller
 {
     public function index()
     {
-        //Ahora aqui retorna la vista de flashcards, que se encuentra en resources/views/pages/flashcards.blade.php
         return view('pages.flashcards');
     }
 
@@ -20,8 +19,10 @@ class FlashcardController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Validación correcta',
-            'data' => $validated
+            'ok' => true,
+            'message' => 'respuesta json inicial de prueba',
+            'tema' => $validated['tema'],
+            'language' => $validated['language']
         ]);
     }
 }
