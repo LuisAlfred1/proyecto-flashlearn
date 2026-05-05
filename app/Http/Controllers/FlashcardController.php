@@ -20,9 +20,25 @@ class FlashcardController extends Controller
 
         return response()->json([
             'ok' => true,
-            'message' => 'respuesta json inicial de prueba',
             'tema' => $validated['tema'],
-            'language' => $validated['language']
+            'language' => $validated['language'],
+            'flashcards' => [
+                [
+                    'palabra' => 'variable',
+                    'traduccion' => 'variable',
+                    'ejemplo' => 'Una variable almacena un valor.'
+                ],
+                [
+                    'palabra' => 'funcion',
+                    'traduccion' => 'función',
+                    'ejemplo' => 'Una función ejecuta una tarea específica.'
+                ],
+                [
+                    'palabra' => 'bucle',
+                    'traduccion' => 'loop',
+                    'ejemplo' => 'Un bucle repite instrucciones varias veces.'
+                ]
+            ]
         ]);
     }
 }
