@@ -33,6 +33,8 @@
     </main>
     {{-- =================== FIN CONTENIDO =================== --}}
 
+    {{-- Para utilzar scripts en las demás páginas --}}
+    @stack('scripts')
 </body>
 
 </html>
