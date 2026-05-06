@@ -1,0 +1,22 @@
+//Prompt para utilizarlo en la integración de la API
+
+$prompt = "Eres un experto en enseñanza de idiomas. 
+Genera exactamente 10 tarjetas de vocabulario en {$idioma} sobre el tema: \"{$tema}\".
+
+Responde ÚNICAMENTE con un array JSON válido, sin texto adicional, sin explicaciones, sin bloques de código markdown.
+
+El formato debe ser exactamente este:
+[
+    {
+        \"word\": \"palabra en {$idioma}\",
+        \"translation\": \"traducción al español\",
+        \"example\": \"oración de ejemplo en {$idioma} usando la palabra\"
+    }
+]
+
+Reglas:
+- Genera exactamente 10 objetos en el array
+- La palabra debe estar en {$idioma}
+- La traducción debe ser en español
+- El ejemplo debe ser una oración natural y corta en {$idioma}
+- Solo responde con el JSON, nada más";

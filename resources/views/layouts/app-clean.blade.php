@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>FlashLearn - Aprende de forma efectiva</title>
+    <title>Flashcards | generar</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -21,19 +21,13 @@
 
 <body class="min-h-screen bg-zinc-50 text-zinc-900 antialiased">
 
-    {{-- ===================== NAVBAR ===================== --}}
-    <x-navbar />
+    {{-- Barra de iconos en parte superior --}}
+    <x-icon-nav />
 
-    {{-- ===================== CONTENIDO PRINCIPAL ===================== --}}
-    <main class="flex-1 ">
-
-        {{-- Slot principal --}}
+    <main class="flex-1">
         @yield('content')
-
     </main>
-    {{-- =================== FIN CONTENIDO =================== --}}
 
-    {{-- Para utilzar scripts en las demás páginas --}}
     @stack('scripts')
 </body>
 

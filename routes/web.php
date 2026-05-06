@@ -11,4 +11,5 @@ Route::get('/', function () {
 //Luis: Agregue /flashcards para mostrar la página de flashcards (habrá un boton en la página de inicio para ir a esta página)
 Route::get('/flashcards', [FlashcardController::class, 'index']);
 
-Route::post('/generate', [FlashcardController::class, 'generate']);
+//agregué la ruta para generar las flashcards, esta ruta se llamará desde el fetch en el archivo flashcards.blade.php
+Route::post('/generate', [FlashcardController::class, 'generate'])->name('flashcards.generate');
