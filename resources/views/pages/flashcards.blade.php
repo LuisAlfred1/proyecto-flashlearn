@@ -1,8 +1,8 @@
-{{-- resources/views/pages/flashcards.blade.php --}}
-@extends('layouts.app')
+{{-- Usamos el layout secundario sin el navbar, ya que tendrá su propia barra de navegación --}}
+@extends('layouts.app-clean')
 
 @section('content')
-    <div class="py-8 md:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="py-8 md:py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- Titulo de pagina --}}
         <div class="text-center mb-6 md:mb-10">
