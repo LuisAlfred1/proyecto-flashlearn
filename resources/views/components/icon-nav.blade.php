@@ -1,4 +1,5 @@
-<header class="bg-zinc-50">
+<!-- Añadimos: fixed top-0 w-full z-50 transition-transform duration-300 e ID -->
+<header id="smart-nav" class="bg-zin-50 fixed top-0 w-full z-50 transition-transform duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             
@@ -18,7 +19,7 @@
             <div class="flex items-center space-x-5">
                 <!-- Historial -->
                 <a href="#" 
-                    class="text-zinc-500 hover:text-[#3bc569] transition-colors duration-200 p-1.5 hover:bg-zinc-50 rounded-full"
+                    class="text-zinc-500 hover:text-[#3bc569] transition-colors duration-200 p-1.5 hover:bg-zinc-100 rounded-full"
                     title="Historial">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6">
@@ -29,7 +30,7 @@
                 
                 <!-- Menú / Opciones -->
                 <a href="#" 
-                    class="text-zinc-500 hover:text-[#3bc569] transition-colors duration-200 p-1.5 hover:bg-zinc-50 rounded-full"
+                    class="text-zinc-500 hover:text-[#3bc569] transition-colors duration-200 p-1.5 hover:bg-zinc-100 rounded-full"
                     title="Menú">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6">
@@ -42,3 +43,6 @@
         </div>
     </div>
 </header>
+
+<!-- IMPORTANTE: Añade este div para empujar el contenido hacia abajo, ya que el header ahora es fixed -->
+<div class="h-16"></div>
