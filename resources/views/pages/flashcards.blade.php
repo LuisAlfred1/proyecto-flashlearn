@@ -86,8 +86,8 @@
             </div>
 
             {{-- Grid de cards --}}
-            <div id="flashcards-grid"
-                class="hidden grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
+            <div id="flashcards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
+                {{-- Aquí se llamó al componente card.blade.php, para ver una vista previa de lo que serán las tarjetas, esto se deberá implementar con datos dinámicos a traves del backend con la API --}}
             </div>
         </div>
 
