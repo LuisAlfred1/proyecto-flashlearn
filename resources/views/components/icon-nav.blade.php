@@ -6,7 +6,7 @@
             <!-- Izquierda: Botón Regresar -->
             <div class="flex items-center">
                 <a href="/"
-                    class="group flex items-center text-zinc-500 hover:text-[#3bc569] transition-all duration-200 ease-in-out">
+                    class="group hover:bg-zinc-100 rounded-full p-1.5 px-4 flex items-center text-zinc-500 hover:text-[#3bc569] transition-all duration-200 ease-in-out">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                         stroke="currentColor" class="w-5 h-5 transition-transform group-hover:-translate-x-1">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
