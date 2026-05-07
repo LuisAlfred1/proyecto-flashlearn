@@ -5,18 +5,17 @@
     <div class="py-8 md:py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- Titulo de pagina --}}
-        <div class="text-center mb-6 md:mb-10">
+        <div class="text-center mb-8 md:mb-8">
             <h1 class="text-2xl md:text-3xl font-bold text-zinc-900">Genera tus Flashcards</h1>
             <p class="text-sm text-zinc-500 mt-2">Elige un tema e idioma y la IA hará el resto</p>
         </div>
 
         {{-- ===== FORMULARIO ===== --}}
-        <div class="bg-white rounded-2xl shadow border border-zinc-100 p-4 md:p-6 mb-6 md:mb-8">
+        <div class="p-2 md:p-2 mb-6 md:mb-8">
             <form id="flashcard-form" class="flex flex-col gap-4">
                 @csrf
-
                 {{-- Fila superior: Tema + Idioma --}}
-                <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex flex-col md:flex-col gap-4">
 
                     {{-- Tema --}}
                     <div class="flex-1">
@@ -25,8 +24,8 @@
                         </label>
                         <input type="text" id="tema" name="tema" placeholder="Ej: Comida en un restaurante..."
                             value="{{ old('tema') }}"
-                            class="w-full rounded-xl border border-zinc-300 px-4 py-3 text-sm text-zinc-900
-                                   placeholder:text-zinc-500 outline-none transition-all duration-200
+                            class="w-full rounded-xl border-2 border-green-700 px-5 py-4 text-sm text-zinc-900
+                                   placeholder:text-zinc-500 outline-none transition-all duration-200 shadow-md shadow-green-100
                                    @error('tema') border-red-400 @enderror" />
                         @error('tema')
                             <p class="mt-1.5 text-xs text-red-500">{{ $message }}</p>
@@ -57,14 +56,14 @@
                     </div>
                 </div>
 
-                {{-- Botón: ancho completo en móvil --}}
+                {{-- Botón: ancho completo en móvil 
                 <button type="submit"
                     class="w-full md:w-auto px-8 py-3 rounded-xl font-semibold text-white text-sm
                            transition-all duration-300 hover:bg-[#31aa55] active:scale-[0.98]
                            cursor-pointer bg-[#3bc569]">
                     Generar Flashcards
                 </button>
-
+                --}}
             </form>
         </div>
 
