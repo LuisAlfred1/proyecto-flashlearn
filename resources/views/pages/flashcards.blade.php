@@ -1,8 +1,8 @@
-{{-- resources/views/pages/flashcards.blade.php --}}
-@extends('layouts.app')
+{{-- Usamos el layout secundario sin el navbar, ya que tendrá su propia barra de navegación --}}
+@extends('layouts.app-clean')
 
 @section('content')
-    <div class="py-8 md:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="py-8 md:py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- Titulo de pagina --}}
         <div class="text-center mb-6 md:mb-10">
@@ -72,7 +72,7 @@
         <div>
             {{-- Estado vacío --}}
             <div id="empty-state"
-                class="flex flex-col items-center justify-center h-48 md:h-64 rounded-2xl
+                class="flex flex-col items-center justify-center h-48 md:h-100 rounded-2xl
                        border-2 border-dashed border-[#3bc569] bg-white">
                 <div class="w-12 h-12 rounded-xl mb-4 flex items-center justify-center bg-zinc-100">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-zinc-400" fill="none" viewBox="0 0 24 24"
@@ -94,24 +94,20 @@
     </div>
     @push('scripts')
         <script>
+            // --- Lógica del Formulario ---
             document.getElementById('flashcard-form').addEventListener('submit', function(e) {
-                e.preventDefault(); // evita que recargue la página
+                e.preventDefault();
 
                 const tema = document.getElementById('tema').value;
                 const language = document.getElementById('idioma').value;
 
-                //fetch para enviar los datos al backend y obtener las flashcards generadas
                 fetch('{{ route('flashcards.generate') }}', {
-                        // Especifica el método HTTP, en este caso POST, porque vamos a enviar datos al servidor
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            // Agrega el token CSRF a los encabezados
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                            // Indica que espera una respuesta JSON
                             'Accept': 'application/json',
                         },
-                        // Envía los datos del formulario en el cuerpo de la solicitud
                         body: JSON.stringify({
                             tema,
                             language
@@ -119,18 +115,39 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data); // Respuesta en la consola del navegador
-
                         if (data.ok) {
-                            console.log('Tema:', data.tema);
-                            console.log('Idioma:', data.language);
-                            // aquí luego se rendizará las flashcards
+                            console.log('¡Generado con éxito!', data);
+                            // Aquí renderizarás las cards después
                         }
                     })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
+                    .catch(error => console.error('Error:', error));
             });
+
+            // --- Lógica del Smart Navbar ---
+            let lastScrollTop = 0;
+            const nav = document.getElementById('smart-nav');
+            const threshold = 10; // Sensibilidad: píxeles mínimos para reaccionar
+
+            window.addEventListener('scroll', function() {
+                let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+                // 1. Evitar valores negativos
+                if (currentScroll < 0) currentScroll = 0;
+
+                // 2. Solo actuar si el movimiento supera el threshold (sensibilidad)
+                if (Math.abs(lastScrollTop - currentScroll) <= threshold) return;
+
+                // 3. Lógica de ocultar/mostrar
+                if (currentScroll > lastScrollTop && currentScroll > 100) {
+                    // Bajando: ocultar
+                    nav.classList.add('-translate-y-full');
+                } else {
+                    // Subiendo: mostrar
+                    nav.classList.remove('-translate-y-full');
+                }
+
+                lastScrollTop = currentScroll;
+            }, false);
         </script>
     @endpush
 @endsection
