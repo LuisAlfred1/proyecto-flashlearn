@@ -19,7 +19,8 @@
     @stack('styles')
 </head>
 
-<body class="min-h-screen bg-zinc-50 text-zinc-900 antialiased">
+<body class="min-h-screen  bg-zinc-50 text-zinc-900 antialiased"
+    style="background: linear-gradient(to bottom, #3bc5693f 0%, transparent 38%) fixed, #fafafa;">
 
     {{-- Barra de iconos en parte superior --}}
     <x-icon-nav />
