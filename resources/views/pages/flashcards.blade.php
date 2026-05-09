@@ -120,24 +120,11 @@
 
         {{-- ===== AREA DE CARDS ===== --}}
         <div>
-            {{-- Estado vacío --}}
-            <div id="empty-state"
-                class="flex flex-col items-center justify-center h-48 md:h-100 rounded-2xl
-                       border-2 border-dashed border-[#3bc569] bg-white">
-                <div class="w-12 h-12 rounded-xl mb-4 flex items-center justify-center bg-zinc-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-zinc-400" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                    </svg>
-                </div>
-                <p class="text-sm font-medium text-zinc-500">Tus flashcards aparecerán aquí</p>
-                <p class="text-xs text-zinc-400 mt-1">Completa el formulario y genera tus tarjetas</p>
-            </div>
 
             {{-- Grid de cards --}}
             <div id="flashcards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
                 {{-- Aquí se llamó al componente card.blade.php, para ver una vista previa de lo que serán las tarjetas, esto se deberá implementar con datos dinámicos a traves del backend con la API --}}
+                {{-- Las cards se renderizan dinámicamente desde el JS --}}
             </div>
         </div>
 
@@ -150,6 +137,22 @@
 
                 const tema = document.getElementById('tema').value;
                 const language = document.getElementById('idioma').value;
+                const grid = document.getElementById('flashcards-grid');
+                const btnGen = document.getElementById('btn-generar');
+
+                // Estado de carga
+                btnGen.disabled = true;
+                btnGen.textContent = 'Generando...';
+                btnGen.style.background = 'linear-gradient(90deg, #0e76b3 0%, #3bc569 100%)';
+                grid.innerHTML = `
+                    <div class="col-span-full flex flex-col items-center justify-center py-16 text-zinc-400">
+                        <svg class="animate-spin h-8 w-8 mb-3 text-[#3bc569]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                        </svg>
+                        <p class="text-sm">Generando flashcards...</p>
+                    </div>
+                `;
 
                 fetch('{{ route('flashcards.generate') }}', {
                         method: 'POST',
@@ -167,10 +170,43 @@
                     .then(data => {
                         if (data.ok) {
                             console.log('¡Generado con éxito!', data);
-                            // Aquí renderizarás las cards después
+
+                            // Actualizar el header con tema e idioma
+                            document.querySelector('header .text-zinc-500').innerHTML =
+                                `Tema: <strong>${data.tema}</strong> | Idioma: <strong>${data.language}</strong>`;
+
+                            // Renderizar las cards
+                            grid.innerHTML = data.flashcards.map(card => `
+                                <div class="bg-white border border-zinc-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+                                    <span class="text-xs font-semibold uppercase tracking-widest" style="color: #0e76b3;">${data.language}</span>
+                                    <h3 class="text-2xl font-bold text-zinc-900">${card.palabra}</h3>
+                                    <p class="text-sm text-zinc-500">${card.traduccion}</p>
+                                    <div class="border-t border-zinc-100 pt-3 mt-auto">
+                                        <p class="text-xs text-zinc-400 italic">"${card.ejemplo}"</p>
+                                    </div>
+                                </div>
+                            `).join('');
+                        } else {
+                            grid.innerHTML = `
+                                <div class="col-span-full flex flex-col items-center justify-center py-16 text-red-400">
+                                    <p class="text-sm font-medium">Error: ${data.message}</p>
+                                </div>
+                            `;
                         }
                     })
-                    .catch(error => console.error('Error:', error));
+                    .catch(error => {
+                        console.error('Error:', error);
+                        grid.innerHTML = `
+                            <div class="col-span-full flex flex-col items-center justify-center py-16 text-red-400">
+                                <p class="text-sm font-medium">Error de conexión. Intenta de nuevo.</p>
+                            </div>
+                        `;
+                    }).finally(() => {
+                        // Reactiva el botón al terminar
+                        btnGen.disabled = false;
+                        btnGen.textContent = 'Generar Flashcards en ' + language;
+                        btnGen.style.background = 'linear-gradient(90deg, #0e76b3 0%, #3bc569 100%)';
+                    });
             });
 
             // --- Lógica del Smart Navbar ---
