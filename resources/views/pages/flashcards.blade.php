@@ -144,8 +144,8 @@
                     {{-- Guardar --}}
                     <button id="btn-guardar"
                         class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium
-                   text-white transition-all duration-200 hover:opacity-90 active:scale-95 cursor-pointer"
-                        style="background: linear-gradient(90deg, #0e76b3 0%, #3bc569 100%);">
+                   text-white transition-all duration-200 hover:opacity-90 active:scale-95 cursor-pointer bg-green-600 hover:bg-green-700"
+                        >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-4 h-4">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -158,7 +158,7 @@
                     <button id="btn-limpiar"
                         class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium
                    bg-zinc-100 text-zinc-600 hover:bg-red-50 hover:text-red-500
-                   transition-all duration-200 active:scale-95 cursor-alias">
+                   transition-all duration-200 active:scale-95 cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-4 h-4">
                             <path stroke-linecap="round" stroke-linejoin="round"
