@@ -119,11 +119,13 @@
         </div>
 
         {{-- ===== AREA DE CARDS ===== --}}
-        <div class="bg-white/80 backdrop-blur-md border border-zinc-100 rounded-2xl">
+        <div class="bg-white border border-zinc-100 rounded-2xl overflow-hidden">
             {{-- Header de cards — sticky tipo GitHub --}}
+
+            {{-- Se añadio top-14 para que el header no se superponga con el navbar --}}
             <header id="cards-header"
                 class="hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-zinc-100
-           justify-between items-center flex-wrap gap-3 px-4 py-3 mb-6 -mx-4 sm:-mx-6 lg:-mx-8
+           justify-between items-center flex-wrap gap-3 px-4 py-2 mb-6
            transition-all duration-300">
 
                 {{-- Izquierda: bandera + tema + idioma --}}
@@ -169,7 +171,8 @@
             </header>
 
             <div id="flashcards-grid"
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 px-4 py-4 sm:px-6 lg:px-8">
+                {{-- Aquí se renderizarán las flashcards --}}
             </div>
         </div>
 
