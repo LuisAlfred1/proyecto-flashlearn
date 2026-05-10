@@ -119,13 +119,11 @@
         </div>
 
         {{-- ===== AREA DE CARDS ===== --}}
-        <div class="bg-white border border-zinc-100 rounded-2xl overflow-hidden">
+        <div class="bg-white border border-zinc-100 mt-6">
             {{-- Header de cards — sticky tipo GitHub --}}
-
-            {{-- Se añadio top-14 para que el header no se superponga con el navbar --}}
             <header id="cards-header"
                 class="hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-zinc-100
-           justify-between items-center flex-wrap gap-3 px-4 py-2 mb-6
+           justify-between items-center flex-wrap gap-3 px-4 py-3 mb-6
            transition-all duration-300">
 
                 {{-- Izquierda: bandera + tema + idioma --}}
