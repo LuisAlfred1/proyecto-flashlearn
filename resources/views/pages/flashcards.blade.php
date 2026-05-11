@@ -119,25 +119,58 @@
         </div>
 
         {{-- ===== AREA DE CARDS ===== --}}
-        <div>
-            {{-- Estado vacío --}}
-            <div id="empty-state"
-                class="flex flex-col items-center justify-center h-48 md:h-100 rounded-2xl
-                       border-2 border-dashed border-[#3bc569] bg-white">
-                <div class="w-12 h-12 rounded-xl mb-4 flex items-center justify-center bg-zinc-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-zinc-400" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                    </svg>
-                </div>
-                <p class="text-sm font-medium text-zinc-500">Tus flashcards aparecerán aquí</p>
-                <p class="text-xs text-zinc-400 mt-1">Completa el formulario y genera tus tarjetas</p>
-            </div>
+        <div class="bg-white border border-zinc-100 mt-6">
+            {{-- Header de cards — sticky tipo GitHub --}}
+            <header id="cards-header"
+                class="hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-zinc-100
+           justify-between items-center flex-wrap gap-3 px-4 py-3 mb-6
+           transition-all duration-300">
 
-            {{-- Grid de cards --}}
-            <div id="flashcards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
-                {{-- Aquí se llamó al componente card.blade.php, para ver una vista previa de lo que serán las tarjetas, esto se deberá implementar con datos dinámicos a traves del backend con la API --}}
+                {{-- Izquierda: bandera + tema + idioma --}}
+                <div class="flex items-center gap-3">
+                    <span id="cards-flag" class="fi fis rounded-md shadow-sm"
+                        style="width:1.75rem; height:1.75rem; font-size:1.75rem;"></span>
+                    <div class="flex flex-col">
+                        <span id="cards-tema" class="text-sm font-semibold text-zinc-900 leading-tight"></span>
+                        <span id="cards-idioma" class="text-xs text-zinc-400 leading-tight"></span>
+                    </div>
+                </div>
+
+                {{-- Derecha: botones con iconos --}}
+                <div class="flex items-center gap-2">
+
+                    {{-- Guardar --}}
+                    <button id="btn-guardar"
+                        class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium
+                   text-white transition-all duration-200 hover:opacity-90 active:scale-95 cursor-pointer bg-green-600 hover:bg-green-700"
+                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                        </svg>
+                        Guardar
+                    </button>
+
+                    {{-- Limpiar --}}
+                    <button id="btn-limpiar"
+                        class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium
+                   bg-zinc-100 text-zinc-600 hover:bg-red-50 hover:text-red-500
+                   transition-all duration-200 active:scale-95 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                        Limpiar
+                    </button>
+
+                </div>
+            </header>
+
+            <div id="flashcards-grid"
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 px-4 py-4 sm:px-6 lg:px-8">
+                {{-- Aquí se renderizarán las flashcards --}}
             </div>
         </div>
 
@@ -150,6 +183,25 @@
 
                 const tema = document.getElementById('tema').value;
                 const language = document.getElementById('idioma').value;
+                const grid = document.getElementById('flashcards-grid');
+                const btnGen = document.getElementById('btn-generar');
+
+                // Estado de carga
+                btnGen.disabled = true;
+                btnGen.textContent = 'Generando...';
+                btnGen.style.background = 'linear-gradient(90deg, #0e76b3 0%, #3bc569 100%)';
+                grid.innerHTML = `
+                    <div class="col-span-full flex flex-col items-center justify-center py-16 gap-4">
+                        <div class="relative w-12 h-12">
+                            <div class="absolute inset-0 rounded-full border-4 border-zinc-200"></div>
+                            <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-[#0e76b3] border-r-[#3bc569] animate-spin"></div>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm font-medium text-zinc-600">Generando flashcards...</p>
+                            <p class="text-xs text-zinc-400 mt-1">La IA está trabajando en ello</p>
+                        </div>
+                    </div>
+                `;
 
                 fetch('{{ route('flashcards.generate') }}', {
                         method: 'POST',
@@ -167,10 +219,66 @@
                     .then(data => {
                         if (data.ok) {
                             console.log('¡Generado con éxito!', data);
-                            // Aquí renderizarás las cards después
+
+                            const flagMap = {
+                                'Inglés': 'fi-us',
+                                'Francés': 'fi-fr',
+                                'Alemán': 'fi-de',
+                                'Italiano': 'fi-it',
+                                'Portugués': 'fi-pt',
+                                'Japonés': 'fi-jp',
+                                'Chino': 'fi-cn',
+                            };
+
+                            // Mostrar y actualizar el header
+                            const cardsHeader = document.getElementById('cards-header');
+                            const cardsFlag = document.getElementById('cards-flag');
+                            const cardsTema = document.getElementById('cards-tema');
+                            const cardsIdioma = document.getElementById('cards-idioma');
+
+                            cardsHeader.classList.remove('hidden');
+                            cardsHeader.classList.add('flex');
+
+                            // Actualizar bandera
+                            cardsFlag.className =
+                                `fi ${flagMap[data.language] ?? 'fi-un'} fis rounded-md shadow-sm`;
+
+                            // Actualizar textos
+                            cardsTema.textContent = data.tema;
+                            cardsIdioma.textContent = data.language;
+
+
+                            // Renderizar las cards
+                            grid.innerHTML = data.flashcards.map(card => `
+                                <div class="bg-white border border-zinc-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+                                    <h3 class="text-2xl font-bold text-zinc-900">${card.palabra}</h3>
+                                    <p class="text-sm text-zinc-600">${card.traduccion}</p>
+                                    <div class="border-t border-zinc-100 pt-3 mt-auto">
+                                        <p class="text-xs text-zinc-600 italic">"${card.ejemplo}"</p>
+                                    </div>
+                                </div>
+                            `).join('');
+                        } else {
+                            grid.innerHTML = `
+                                <div class="col-span-full flex flex-col items-center justify-center py-16 text-red-400">
+                                    <p class="text-sm font-medium">Error: ${data.message}</p>
+                                </div>
+                            `;
                         }
                     })
-                    .catch(error => console.error('Error:', error));
+                    .catch(error => {
+                        console.error('Error:', error);
+                        grid.innerHTML = `
+                            <div class="col-span-full flex flex-col items-center justify-center py-16 text-red-400">
+                                <p class="text-sm font-medium">Error de conexión. Intenta de nuevo.</p>
+                            </div>
+                        `;
+                    }).finally(() => {
+                        // Reactiva el botón al terminar
+                        btnGen.disabled = false;
+                        btnGen.textContent = 'Generar Flashcards en ' + language;
+                        btnGen.style.background = 'linear-gradient(90deg, #0e76b3 0%, #3bc569 100%)';
+                    });
             });
 
             // --- Lógica del Smart Navbar ---
