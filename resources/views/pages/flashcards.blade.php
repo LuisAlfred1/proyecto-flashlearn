@@ -11,7 +11,6 @@
         </div>
 
         {{-- ===== FORMULARIO ===== --}}
-        {{-- ===== FORMULARIO ===== --}}
         <div class="p-2 md:p-2 mb-6 md:mb-8">
             <form id="flashcard-form" class="flex flex-col gap-6">
                 @csrf
@@ -119,10 +118,10 @@
         </div>
 
         {{-- ===== AREA DE CARDS ===== --}}
-        <div class="bg-white border border-zinc-100 mt-6">
+        <div class=" mt-6">
             {{-- Header de cards — sticky tipo GitHub --}}
             <header id="cards-header"
-                class="hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-zinc-100
+                class="hidden sticky top-0 z-40 bg-white/60 backdrop-blur-md border-b border-zinc-100
            justify-between items-center flex-wrap gap-3 px-4 py-3 mb-6
            transition-all duration-300">
 
@@ -131,8 +130,8 @@
                     <span id="cards-flag" class="fi fis rounded-md shadow-sm"
                         style="width:1.75rem; height:1.75rem; font-size:1.75rem;"></span>
                     <div class="flex flex-col">
-                        <span id="cards-tema" class="text-sm font-semibold text-zinc-900 leading-tight"></span>
-                        <span id="cards-idioma" class="text-xs text-zinc-400 leading-tight"></span>
+                        <span id="cards-tema" class="text-sm text-zinc-900"></span>
+                        <span id="cards-idioma" class="text-xs text-zinc-400"></span>
                     </div>
                 </div>
 
@@ -142,8 +141,7 @@
                     {{-- Guardar --}}
                     <button id="btn-guardar"
                         class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium
-                   text-white transition-all duration-200 hover:opacity-90 active:scale-95 cursor-pointer bg-green-600 hover:bg-green-700"
-                        >
+                   text-white transition-all duration-200 hover:opacity-90 active:scale-95 cursor-pointer bg-green-600 hover:bg-green-700">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-4 h-4">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -168,29 +166,65 @@
                 </div>
             </header>
 
+            {{-- Ejemplo de cards estáticas (eliminar después) 
+            <div class="">
+                @for ($i = 1; $i <= 5; $i++)
+                    <x-card palabra="Palabra {{ $i }}" traduccion="Traducción {{ $i }}"
+                        ejemplo="Ejemplo de uso para la palabra {{ $i }}" />
+                @endfor
+            </div>
+            --}}
+
             <div id="flashcards-grid"
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 px-4 py-4 sm:px-6 lg:px-8">
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 md:gap-4 py-4 sm:px-6">
                 {{-- Aquí se renderizarán las flashcards --}}
             </div>
+
+            {{-- Paginación FUERA del grid --}}
+            <div id="pagination" class="hidden flex items-center justify-center gap-4 py-6">
+                <button id="btn-prev"
+                    class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium
+                           bg-zinc-100 text-zinc-600 hover:bg-zinc-200 transition-all
+                           active:scale-95 cursor-pointer disabled:cursor-not-allowed">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                    </svg>
+                    Anterior
+                </button>
+
+                <span id="page-info" class="text-sm font-semibold text-zinc-500 min-w-[48px] text-center">
+                    1 / 2
+                </span>
+
+                <button id="btn-next"
+                    class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium bg-[#0e76b3] hover:bg-[#0c679c]
+                           text-white transition-all active:scale-95 cursor-pointer disabled:cursor-not-allowed">
+                    Siguiente
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+                </button>
+            </div>
+
         </div>
+        @push('scripts')
+            <script>
+                // --- Lógica del Formulario ---
+                document.getElementById('flashcard-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
 
-    </div>
-    @push('scripts')
-        <script>
-            // --- Lógica del Formulario ---
-            document.getElementById('flashcard-form').addEventListener('submit', function(e) {
-                e.preventDefault();
+                    const tema = document.getElementById('tema').value;
+                    const language = document.getElementById('idioma').value;
+                    const grid = document.getElementById('flashcards-grid');
+                    const btnGen = document.getElementById('btn-generar');
 
-                const tema = document.getElementById('tema').value;
-                const language = document.getElementById('idioma').value;
-                const grid = document.getElementById('flashcards-grid');
-                const btnGen = document.getElementById('btn-generar');
-
-                // Estado de carga
-                btnGen.disabled = true;
-                btnGen.textContent = 'Generando...';
-                btnGen.style.background = 'linear-gradient(90deg, #0e76b3 0%, #3bc569 100%)';
-                grid.innerHTML = `
+                    // Estado de carga
+                    btnGen.disabled = true;
+                    btnGen.textContent = 'Generando...';
+                    btnGen.style.background = 'linear-gradient(90deg, #0e76b3 0%, #3bc569 100%)';
+                    grid.innerHTML = `
                     <div class="col-span-full flex flex-col items-center justify-center py-16 gap-4">
                         <div class="relative w-12 h-12">
                             <div class="absolute inset-0 rounded-full border-4 border-zinc-200"></div>
@@ -203,136 +237,163 @@
                     </div>
                 `;
 
-                fetch('{{ route('flashcards.generate') }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                            'Accept': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            tema,
-                            language
+                    fetch('{{ route('flashcards.generate') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                tema,
+                                language
+                            })
                         })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.ok) {
-                            console.log('¡Generado con éxito!', data);
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.ok) {
+                                console.log('¡Generado con éxito!', data);
 
-                            const flagMap = {
-                                'Inglés': 'fi-us',
-                                'Francés': 'fi-fr',
-                                'Alemán': 'fi-de',
-                                'Italiano': 'fi-it',
-                                'Portugués': 'fi-pt',
-                                'Japonés': 'fi-jp',
-                                'Chino': 'fi-cn',
-                            };
+                                const flagMap = {
+                                    'Inglés': 'fi-us',
+                                    'Francés': 'fi-fr',
+                                    'Alemán': 'fi-de',
+                                    'Italiano': 'fi-it',
+                                    'Portugués': 'fi-pt',
+                                    'Japonés': 'fi-jp',
+                                    'Chino': 'fi-cn',
+                                };
 
-                            // Mostrar y actualizar el header
-                            const cardsHeader = document.getElementById('cards-header');
-                            const cardsFlag = document.getElementById('cards-flag');
-                            const cardsTema = document.getElementById('cards-tema');
-                            const cardsIdioma = document.getElementById('cards-idioma');
+                                // Mostrar y actualizar el header
+                                const cardsHeader = document.getElementById('cards-header');
+                                const cardsFlag = document.getElementById('cards-flag');
+                                const cardsTema = document.getElementById('cards-tema');
+                                const cardsIdioma = document.getElementById('cards-idioma');
 
-                            cardsHeader.classList.remove('hidden');
-                            cardsHeader.classList.add('flex');
+                                cardsHeader.classList.remove('hidden');
+                                cardsHeader.classList.add('flex');
 
-                            // Actualizar bandera
-                            cardsFlag.className =
-                                `fi ${flagMap[data.language] ?? 'fi-un'} fis rounded-md shadow-sm`;
+                                // Actualizar bandera
+                                cardsFlag.className =
+                                    `fi ${flagMap[data.language] ?? 'fi-un'} fis rounded-md shadow-sm`;
 
-                            // Actualizar textos
-                            cardsTema.textContent = data.tema;
-                            cardsIdioma.textContent = data.language;
+                                // Actualizar textos
+                                cardsTema.textContent = data.tema;
+                                cardsIdioma.textContent = data.language;
 
 
-                            // Renderizar las cards
-                            grid.innerHTML = data.flashcards.map(card => `
-                                <div class="bg-white border border-zinc-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
-                                    <h3 class="text-2xl font-bold text-zinc-900">${card.palabra}</h3>
-                                    <p class="text-sm text-zinc-600">${card.traduccion}</p>
-                                    <div class="border-t border-zinc-100 pt-3 mt-auto">
-                                        <p class="text-xs text-zinc-600 italic">"${card.ejemplo}"</p>
+                                // Renderizar las cards
+                                // Renderizar las cards con paginación
+                                const flashcards = data.flashcards;
+                                const cardsPerPage = 5;
+                                let currentPage = 1;
+                                const totalPages = Math.ceil(flashcards.length / cardsPerPage);
+
+                                function renderPage(page) {
+                                    const start = (page - 1) * cardsPerPage;
+                                    const end = start + cardsPerPage;
+                                    const pageCards = flashcards.slice(start, end);
+
+                                    grid.innerHTML = pageCards.map(card => `
+                                    <div class="bg-white border border-[#3bc569] rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+                                        <div class="flex justify-between items-center">
+                                            <h3 class="text-lg font-bold text-zinc-900">${card.palabra}</h3>
+                                            <button class="text-zinc-400 hover:text-zinc-600 transition-colors hover:scale-110 cursor-pointer" title="Escuchar pronunciación">
+                                                <img src="{{ asset('images/speaker.svg') }}" class="w-5 h-5" alt="Icono de sonido">
+                                            </button>
+                                        </div>
+                                        <p class="text-sm text-zinc-700">${card.traduccion}</p>
+                                        <div class="border-t border-zinc-100 pt-3 mt-auto">
+                                            <p class="text-xs text-zinc-600 italic">"${card.ejemplo}"</p>
+                                        </div>
                                     </div>
-                                </div>
-                            `).join('');
-                        } else {
+                                `).join('');
+
+                                    // Actualizar controles de paginación
+                                    document.getElementById('page-info').textContent = `${page} / ${totalPages}`;
+                                    document.getElementById('btn-prev').disabled = page === 1;
+                                    document.getElementById('btn-next').disabled = page === totalPages;
+                                    document.getElementById('btn-prev').classList.toggle('opacity-40', page === 1);
+                                    document.getElementById('btn-next').classList.toggle('opacity-40', page ===
+                                        totalPages);
+                                }
+
+                                // Primera página
+                                renderPage(currentPage);
+
+                                // Mostrar controles
+                                document.getElementById('pagination').classList.remove('hidden');
+
+                                // Eventos de paginación
+                                document.getElementById('btn-prev').onclick = () => {
+                                    if (currentPage > 1) {
+                                        currentPage--;
+                                        renderPage(currentPage);
+                                    }
+                                };
+                                document.getElementById('btn-next').onclick = () => {
+                                    if (currentPage < totalPages) {
+                                        currentPage++;
+                                        renderPage(currentPage);
+                                    }
+                                };
+
+                                // Activar scroll listener del header
+                                // Activar scroll listener del header
+                                const cardsHeaderSticky = document.getElementById('cards-header');
+                                cardsHeaderSticky.dataset.active = 'true';
+
+                            } else {
+                                // ← el else correcto, fuera de renderPage
+                                grid.innerHTML = `
+                                    <div class="col-span-full flex flex-col items-center justify-center py-16 text-red-400">
+                                        <p class="text-sm font-medium">Error: ${data.message}</p>
+                                    </div>
+                                `;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
                             grid.innerHTML = `
-                                <div class="col-span-full flex flex-col items-center justify-center py-16 text-red-400">
-                                    <p class="text-sm font-medium">Error: ${data.message}</p>
-                                </div>
-                            `;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        grid.innerHTML = `
                             <div class="col-span-full flex flex-col items-center justify-center py-16 text-red-400">
                                 <p class="text-sm font-medium">Error de conexión. Intenta de nuevo.</p>
                             </div>
                         `;
-                    }).finally(() => {
-                        // Reactiva el botón al terminar
+                        }).finally(() => {
+                            // Reactiva el botón al terminar
+                            btnGen.disabled = false;
+                            btnGen.textContent = 'Generar Flashcards en ' + language;
+                            btnGen.style.background = 'linear-gradient(90deg, #0e76b3 0%, #3bc569 100%)';
+                        });
+                });
+
+                const flags = document.querySelectorAll('.flag-btn');
+                const input = document.getElementById('idioma');
+                const btnGen = document.getElementById('btn-generar');
+
+                flags.forEach(btn => {
+                    btn.addEventListener('click', () => {
+
+                        // Quita selección anterior
+                        flags.forEach(b => {
+                            b.classList.remove('border-[#0e76b3]', 'bg-blue-100');
+                            b.querySelector('span.text-xs').classList.remove('text-[#0e76b3]');
+                        });
+
+                        // Marca el seleccionado
+                        btn.classList.add('border-[#0e76b3]', 'bg-blue-100');
+                        btn.querySelector('span.text-xs').classList.add('text-[#0e76b3]');
+
+                        // Guarda el valor en el input hidden
+                        input.value = btn.dataset.idioma;
+
+                        // Activa el botón
                         btnGen.disabled = false;
-                        btnGen.textContent = 'Generar Flashcards en ' + language;
+                        btnGen.textContent = 'Generar Flashcards en ' + btn.dataset.idioma;
                         btnGen.style.background = 'linear-gradient(90deg, #0e76b3 0%, #3bc569 100%)';
                     });
-            });
-
-            // --- Lógica del Smart Navbar ---
-            let lastScrollTop = 0;
-            const nav = document.getElementById('smart-nav');
-            const threshold = 10; // Sensibilidad: píxeles mínimos para reaccionar
-
-            window.addEventListener('scroll', function() {
-                let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-
-                // 1. Evitar valores negativos
-                if (currentScroll < 0) currentScroll = 0;
-
-                // 2. Solo actuar si el movimiento supera el threshold (sensibilidad)
-                if (Math.abs(lastScrollTop - currentScroll) <= threshold) return;
-
-                // 3. Lógica de ocultar/mostrar
-                if (currentScroll > lastScrollTop && currentScroll > 100) {
-                    // Bajando: ocultar
-                    nav.classList.add('-translate-y-full');
-                } else {
-                    // Subiendo: mostrar
-                    nav.classList.remove('-translate-y-full');
-                }
-
-                lastScrollTop = currentScroll;
-            }, false);
-
-            const flags = document.querySelectorAll('.flag-btn');
-            const input = document.getElementById('idioma');
-            const btnGen = document.getElementById('btn-generar');
-
-            flags.forEach(btn => {
-                btn.addEventListener('click', () => {
-
-                    // Quita selección anterior
-                    flags.forEach(b => {
-                        b.classList.remove('border-[#0e76b3]', 'bg-blue-100');
-                        b.querySelector('span.text-xs').classList.remove('text-[#0e76b3]');
-                    });
-
-                    // Marca el seleccionado
-                    btn.classList.add('border-[#0e76b3]', 'bg-blue-100');
-                    btn.querySelector('span.text-xs').classList.add('text-[#0e76b3]');
-
-                    // Guarda el valor en el input hidden
-                    input.value = btn.dataset.idioma;
-
-                    // Activa el botón
-                    btnGen.disabled = false;
-                    btnGen.textContent = 'Generar Flashcards en ' + btn.dataset.idioma;
-                    btnGen.style.background = 'linear-gradient(90deg, #0e76b3 0%, #3bc569 100%)';
                 });
-            });
-        </script>
-    @endpush
+            </script>
+        @endpush
+    </div>
 @endsection
