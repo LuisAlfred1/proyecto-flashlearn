@@ -166,7 +166,7 @@
                 </div>
             </header>
 
-            {{-- Esto solo es para pruebas 
+            {{-- Ejemplo de cards estáticas (eliminar después) 
             <div class="">
                 @for ($i = 1; $i <= 5; $i++)
                     <x-card palabra="Palabra {{ $i }}" traduccion="Traducción {{ $i }}"
@@ -178,176 +178,227 @@
             <div id="flashcards-grid"
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 md:gap-4 py-4 sm:px-6">
                 {{-- Aquí se renderizarán las flashcards --}}
+
+                {{-- Paginación --}}
+                <div id="pagination" class="hidden flex items-center justify-center gap-4 py-6">
+
+                    {{-- Anterior --}}
+                    <button id="btn-prev"
+                        class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium bg-zinc-100 text-zinc-600 hover:bg-zinc-200 transition-all
+                            active:scale-95 cursor-pointer disabled:cursor-not-allowed">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                        </svg>
+                        Anterior
+                    </button>
+
+                    {{-- Indicador --}}
+                    <span id="page-info" class="text-sm font-semibold text-zinc-500 min-w-[48px] text-center">
+                        1 / 2
+                    </span>
+
+                    {{-- Siguiente --}}
+                    <button id="btn-next"
+                        class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium
+                        text-white transition-all active:scale-95 cursor-pointer disabled:cursor-not-allowed"
+                        style="background: linear-gradient(90deg, #0e76b3 0%, #3bc569 100%);">
+                        Siguiente
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </button>
+                </div>
             </div>
+
         </div>
+        @push('scripts')
+            <script>
+                // --- Lógica del Formulario ---
+                document.getElementById('flashcard-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
 
-    </div>
-    @push('scripts')
-        <script>
-            // --- Lógica del Formulario ---
-            document.getElementById('flashcard-form').addEventListener('submit', function(e) {
-                e.preventDefault();
+                    const tema = document.getElementById('tema').value;
+                    const language = document.getElementById('idioma').value;
+                    const grid = document.getElementById('flashcards-grid');
+                    const btnGen = document.getElementById('btn-generar');
 
-                const tema = document.getElementById('tema').value;
-                const language = document.getElementById('idioma').value;
-                const grid = document.getElementById('flashcards-grid');
-                const btnGen = document.getElementById('btn-generar');
-
-                // Estado de carga
-                btnGen.disabled = true;
-                btnGen.textContent = 'Generando...';
-                btnGen.style.background = 'linear-gradient(90deg, #0e76b3 0%, #3bc569 100%)';
-                grid.innerHTML = `
-                    <div class="col-span-full flex flex-col items-center justify-center py-16 gap-4">
-                        <div class="relative w-12 h-12">
-                            <div class="absolute inset-0 rounded-full border-4 border-zinc-200"></div>
-                            <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-[#0e76b3] border-r-[#3bc569] animate-spin"></div>
+                    // Estado de carga
+                    btnGen.disabled = true;
+                    btnGen.textContent = 'Generando...';
+                    btnGen.style.background = 'linear-gradient(90deg, #0e76b3 0%, #3bc569 100%)';
+                    grid.innerHTML = `
+                        <div class="col-span-full flex flex-col items-center justify-center py-16 gap-4">
+                            <div class="relative w-12 h-12">
+                                <div class="absolute inset-0 rounded-full border-4 border-zinc-200"></div>
+                                <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-[#0e76b3] border-r-[#3bc569] animate-spin"></div>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-sm font-medium text-zinc-600">Generando flashcards...</p>
+                                <p class="text-xs text-zinc-400 mt-1">La IA está trabajando en ello</p>
+                            </div>
                         </div>
-                        <div class="text-center">
-                            <p class="text-sm font-medium text-zinc-600">Generando flashcards...</p>
-                            <p class="text-xs text-zinc-400 mt-1">La IA está trabajando en ello</p>
-                        </div>
-                    </div>
-                `;
+                    `;
 
-                fetch('{{ route('flashcards.generate') }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                            'Accept': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            tema,
-                            language
+                    fetch('{{ route('flashcards.generate') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                tema,
+                                language
+                            })
                         })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.ok) {
-                            console.log('¡Generado con éxito!', data);
+                        .then(response => response.json())
+                        .then(data => {
 
-                            const flagMap = {
-                                'Inglés': 'fi-us',
-                                'Francés': 'fi-fr',
-                                'Alemán': 'fi-de',
-                                'Italiano': 'fi-it',
-                                'Portugués': 'fi-pt',
-                                'Japonés': 'fi-jp',
-                                'Chino': 'fi-cn',
-                            };
+                            if (data.ok) {
+                                console.log('¡Generado con éxito!', data);
 
-                            // Mostrar y actualizar el header
-                            const cardsHeader = document.getElementById('cards-header');
-                            const cardsFlag = document.getElementById('cards-flag');
-                            const cardsTema = document.getElementById('cards-tema');
-                            const cardsIdioma = document.getElementById('cards-idioma');
+                                const flagMap = {
+                                    'Inglés': 'fi-us',
+                                    'Francés': 'fi-fr',
+                                    'Alemán': 'fi-de',
+                                    'Italiano': 'fi-it',
+                                    'Portugués': 'fi-pt',
+                                    'Japonés': 'fi-jp',
+                                    'Chino': 'fi-cn',
+                                };
 
-                            cardsHeader.classList.remove('hidden');
-                            cardsHeader.classList.add('flex');
+                                // Actualizar header
+                                const cardsHeader = document.getElementById('cards-header');
+                                const cardsFlag = document.getElementById('cards-flag');
+                                const cardsTema = document.getElementById('cards-tema');
+                                const cardsIdioma = document.getElementById('cards-idioma');
 
-                            // Actualizar bandera
-                            cardsFlag.className =
-                                `fi ${flagMap[data.language] ?? 'fi-un'} fis rounded-md shadow-sm`;
+                                cardsHeader.classList.remove('hidden');
+                                cardsHeader.classList.add('flex');
+                                cardsFlag.className =
+                                    `fi ${flagMap[data.language] ?? 'fi-un'} fis rounded-md shadow-sm`;
+                                cardsTema.textContent = data.tema;
+                                cardsIdioma.textContent = data.language;
 
-                            // Actualizar textos
-                            cardsTema.textContent = data.tema;
-                            cardsIdioma.textContent = data.language;
+                                // Paginación
+                                const flashcards = data.flashcards;
+                                const cardsPerPage = 5;
+                                let currentPage = 1;
+                                const totalPages = Math.ceil(flashcards.length / cardsPerPage);
 
+                                function renderPage(page) {
+                                    const start = (page - 1) * cardsPerPage;
+                                    const pageCards = flashcards.slice(start, start + cardsPerPage);
 
-                            // Renderizar las cards
-                            grid.innerHTML = data.flashcards.map(card => `
-                                <div class="bg-white border border-[#3bc569] rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
-                                    <div class="flex justify-between items-center">
-                                        <h3 class="text-lg font-bold text-zinc-900">${card.palabra}</h3>
+                                    grid.innerHTML = pageCards.map(card => `
+                                        <div class="bg-white border border-[#3bc569] rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+                                            <div class="flex justify-between items-center">
+                                                <h3 class="text-lg font-bold text-zinc-900">${card.palabra}</h3>
+                                                <button class="text-zinc-400 hover:text-zinc-600 transition-colors hover:scale-110 cursor-pointer" title="Escuchar pronunciación">
+                                                    <img src="{{ asset('images/speaker.svg') }}" class="w-5 h-5" alt="Icono de sonido">
+                                                </button>
+                                            </div>
+                                            <p class="text-sm text-zinc-700">${card.traduccion}</p>
+                                            <div class="border-t border-zinc-100 pt-3 mt-auto">
+                                                <p class="text-xs text-zinc-600 italic">"${card.ejemplo}"</p>
+                                            </div>
+                                        </div>
+                                    `).join('');
 
-                                        <button class="text-zinc-400 hover:text-zinc-600 transition-colors hover:scale-110 cursor-pointer" title="Escuchar pronunciación">
-                                            <img src="{{ asset('images/speaker.svg') }}" class="w-5 h-5" alt="Icono de sonido">
-                                        </button>
+                                    // Actualizar controles
+                                    document.getElementById('page-info').textContent = `${page} / ${totalPages}`;
+                                    document.getElementById('btn-prev').disabled = page === 1;
+                                    document.getElementById('btn-next').disabled = page === totalPages;
+                                    document.getElementById('btn-prev').classList.toggle('opacity-40', page === 1);
+                                    document.getElementById('btn-next').classList.toggle('opacity-40', page ===
+                                        totalPages);
+                                }
+
+                                // Renderizar primera página
+                                renderPage(currentPage);
+
+                                // Mostrar paginación
+                                document.getElementById('pagination').classList.remove('hidden');
+
+                                // Eventos de paginación
+                                document.getElementById('btn-prev').onclick = () => {
+                                    if (currentPage > 1) {
+                                        currentPage--;
+                                        renderPage(currentPage);
+                                    }
+                                };
+                                document.getElementById('btn-next').onclick = () => {
+                                    if (currentPage < totalPages) {
+                                        currentPage++;
+                                        renderPage(currentPage);
+                                    }
+                                };
+
+                                // Activar scroll listener del header
+                                const cardsHeaderSticky = document.getElementById('cards-header');
+                                cardsHeaderSticky.dataset.active = 'true';
+
+                            } else {
+                                // ← el else correcto, fuera de renderPage
+                                grid.innerHTML = `
+                                    <div class="col-span-full flex flex-col items-center justify-center py-16 text-red-400">
+                                        <p class="text-sm font-medium">Error: ${data.message}</p>
                                     </div>
-
-                                    <p class="text-sm text-zinc-700">${card.traduccion}</p>
-
-                                    <div class="border-t border-zinc-100 pt-3 mt-auto">
-                                        <p class="text-xs text-zinc-600 italic">"${card.ejemplo}"</p>
-                                    </div>
-                                </div>
-                            `).join('');
-                        } else {
+                                `;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
                             grid.innerHTML = `
                                 <div class="col-span-full flex flex-col items-center justify-center py-16 text-red-400">
-                                    <p class="text-sm font-medium">Error: ${data.message}</p>
+                                    <p class="text-sm font-medium">Error de conexión. Intenta de nuevo.</p>
                                 </div>
                             `;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        grid.innerHTML = `
-                            <div class="col-span-full flex flex-col items-center justify-center py-16 text-red-400">
-                                <p class="text-sm font-medium">Error de conexión. Intenta de nuevo.</p>
-                            </div>
-                        `;
-                    }).finally(() => {
-                        // Reactiva el botón al terminar
+                        })
+                        .finally(() => {
+                            btnGen.disabled = false;
+                            btnGen.textContent = 'Generar Flashcards en ' + language;
+                            btnGen.style.background = 'linear-gradient(90deg, #0e76b3 0%, #3bc569 100%)';
+                        });
+                });
+
+                // --- Lógica del header sticky de cards ---
+                const cardsHeaderSticky = document.getElementById('cards-header');
+                const gridEl = document.getElementById('flashcards-grid');
+
+                window.addEventListener('scroll', function() {
+                    if (!cardsHeaderSticky.dataset.active) return;
+                    const gridTop = gridEl.getBoundingClientRect().top + window.scrollY;
+                    if (window.scrollY > gridTop - 100) {
+                        cardsHeaderSticky.classList.remove('hidden');
+                        cardsHeaderSticky.classList.add('flex');
+                    } else {
+                        cardsHeaderSticky.classList.add('hidden');
+                        cardsHeaderSticky.classList.remove('flex');
+                    }
+                });
+
+                // --- Lógica de banderas ---
+                const flags = document.querySelectorAll('.flag-btn');
+                const input = document.getElementById('idioma');
+                const btnGen = document.getElementById('btn-generar');
+
+                flags.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        flags.forEach(b => {
+                            b.classList.remove('border-[#0e76b3]', 'bg-blue-100');
+                            b.querySelector('span.text-xs').classList.remove('text-[#0e76b3]');
+                        });
+                        btn.classList.add('border-[#0e76b3]', 'bg-blue-100');
+                        btn.querySelector('span.text-xs').classList.add('text-[#0e76b3]');
+                        input.value = btn.dataset.idioma;
                         btnGen.disabled = false;
-                        btnGen.textContent = 'Generar Flashcards en ' + language;
+                        btnGen.textContent = 'Generar Flashcards en ' + btn.dataset.idioma;
                         btnGen.style.background = 'linear-gradient(90deg, #0e76b3 0%, #3bc569 100%)';
                     });
-            });
-
-            // --- Lógica del Smart Navbar ---
-            let lastScrollTop = 0;
-            const nav = document.getElementById('smart-nav');
-            const threshold = 10; // Sensibilidad: píxeles mínimos para reaccionar
-
-            window.addEventListener('scroll', function() {
-                let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-
-                // 1. Evitar valores negativos
-                if (currentScroll < 0) currentScroll = 0;
-
-                // 2. Solo actuar si el movimiento supera el threshold (sensibilidad)
-                if (Math.abs(lastScrollTop - currentScroll) <= threshold) return;
-
-                // 3. Lógica de ocultar/mostrar
-                if (currentScroll > lastScrollTop && currentScroll > 100) {
-                    // Bajando: ocultar
-                    nav.classList.add('-translate-y-full');
-                } else {
-                    // Subiendo: mostrar
-                    nav.classList.remove('-translate-y-full');
-                }
-
-                lastScrollTop = currentScroll;
-            }, false);
-
-            const flags = document.querySelectorAll('.flag-btn');
-            const input = document.getElementById('idioma');
-            const btnGen = document.getElementById('btn-generar');
-
-            flags.forEach(btn => {
-                btn.addEventListener('click', () => {
-
-                    // Quita selección anterior
-                    flags.forEach(b => {
-                        b.classList.remove('border-[#0e76b3]', 'bg-blue-100');
-                        b.querySelector('span.text-xs').classList.remove('text-[#0e76b3]');
-                    });
-
-                    // Marca el seleccionado
-                    btn.classList.add('border-[#0e76b3]', 'bg-blue-100');
-                    btn.querySelector('span.text-xs').classList.add('text-[#0e76b3]');
-
-                    // Guarda el valor en el input hidden
-                    input.value = btn.dataset.idioma;
-
-                    // Activa el botón
-                    btnGen.disabled = false;
-                    btnGen.textContent = 'Generar Flashcards en ' + btn.dataset.idioma;
-                    btnGen.style.background = 'linear-gradient(90deg, #0e76b3 0%, #3bc569 100%)';
                 });
-            });
-        </script>
-    @endpush
-@endsection
+            </script>
+        @endpush
+    @endsection

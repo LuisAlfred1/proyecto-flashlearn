@@ -1,5 +1,5 @@
 <!-- Añadimos: fixed top-0 w-full z-50 transition-transform duration-300 e ID -->
-<header id="smart-nav" class="bg-zin-50 fixed top-0 w-full z-50 transition-transform duration-300">
+<header id="smart-nav" class="bg-zin-50 top-0 w-full transition-transform duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             
@@ -45,4 +45,4 @@
 </header>
 
 <!-- IMPORTANTE: Añade este div para empujar el contenido hacia abajo, ya que el header ahora es fixed -->
-<div class="h-16"></div>
+<div class="h-8"></div>
