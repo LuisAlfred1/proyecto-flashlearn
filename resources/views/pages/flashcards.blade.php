@@ -11,7 +11,6 @@
         </div>
 
         {{-- ===== FORMULARIO ===== --}}
-        {{-- ===== FORMULARIO ===== --}}
         <div class="p-2 md:p-2 mb-6 md:mb-8">
             <form id="flashcard-form" class="flex flex-col gap-6">
                 @csrf
@@ -119,10 +118,10 @@
         </div>
 
         {{-- ===== AREA DE CARDS ===== --}}
-        <div class="bg-white border border-zinc-100 mt-6">
+        <div class=" mt-6">
             {{-- Header de cards — sticky tipo GitHub --}}
             <header id="cards-header"
-                class="hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-zinc-100
+                class="hidden sticky top-0 z-40 bg-white/60 backdrop-blur-md border-b border-zinc-100
            justify-between items-center flex-wrap gap-3 px-4 py-3 mb-6
            transition-all duration-300">
 
@@ -131,8 +130,8 @@
                     <span id="cards-flag" class="fi fis rounded-md shadow-sm"
                         style="width:1.75rem; height:1.75rem; font-size:1.75rem;"></span>
                     <div class="flex flex-col">
-                        <span id="cards-tema" class="text-sm font-semibold text-zinc-900 leading-tight"></span>
-                        <span id="cards-idioma" class="text-xs text-zinc-400 leading-tight"></span>
+                        <span id="cards-tema" class="text-sm text-zinc-900"></span>
+                        <span id="cards-idioma" class="text-xs text-zinc-400"></span>
                     </div>
                 </div>
 
@@ -167,17 +166,17 @@
                 </div>
             </header>
 
-            {{-- Esto solo es para pruebas--}}
-            <div
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 md:gap-4  py-4 sm:px-6 ">
+            {{-- Esto solo es para pruebas 
+            <div class="">
                 @for ($i = 1; $i <= 5; $i++)
                     <x-card palabra="Palabra {{ $i }}" traduccion="Traducción {{ $i }}"
                         ejemplo="Ejemplo de uso para la palabra {{ $i }}" />
                 @endfor
             </div>
+            --}}
 
             <div id="flashcards-grid"
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 px-4 py-4 sm:px-6 lg:px-8">
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 md:gap-4 py-4 sm:px-6">
                 {{-- Aquí se renderizarán las flashcards --}}
             </div>
         </div>
@@ -258,9 +257,17 @@
 
                             // Renderizar las cards
                             grid.innerHTML = data.flashcards.map(card => `
-                                <div class="bg-white border border-zinc-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
-                                    <h3 class="text-2xl font-bold text-zinc-900">${card.palabra}</h3>
-                                    <p class="text-sm text-zinc-600">${card.traduccion}</p>
+                                <div class="bg-white border border-[#3bc569] rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+                                    <div class="flex justify-between items-center">
+                                        <h3 class="text-lg font-bold text-zinc-900">${card.palabra}</h3>
+
+                                        <button class="text-zinc-400 hover:text-zinc-600 transition-colors hover:scale-110 cursor-pointer" title="Escuchar pronunciación">
+                                            <img src="{{ asset('images/speaker.svg') }}" class="w-5 h-5" alt="Icono de sonido">
+                                        </button>
+                                    </div>
+
+                                    <p class="text-sm text-zinc-700">${card.traduccion}</p>
+
                                     <div class="border-t border-zinc-100 pt-3 mt-auto">
                                         <p class="text-xs text-zinc-600 italic">"${card.ejemplo}"</p>
                                     </div>
