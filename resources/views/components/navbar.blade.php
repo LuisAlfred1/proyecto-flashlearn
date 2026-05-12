@@ -11,34 +11,62 @@
 
 
         {{-- CTA --}}
-        <div class="hidden md:flex items-center gap-3">
-            <a href="#" class="text-sm font-medium text-zinc-100 hover:text-zinc-900 transition-colors">
-                Pruebalo ahora!
-            </a>
-        </div>
+        {{-- Aquí si el usuario ya se autentico se debe mostrar su avatar y su nombre --}}
+        @if (auth()->check())
+            <div class="relative flex items-center gap-3" x-data="{ open: false }">
+                {{-- Nombre del usuario (Opcional ocultar en móvil) --}}
+                <span class="hidden sm:block text-sm font-medium text-white">
+                    {{ auth()->user()->name }}
+                </span>
 
-        {{-- Mobile menu button --}}
-        <button id="mobile-menu-btn"
-            class="flex md:hidden items-center justify-center h-9 w-9 rounded-lg
-                        text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 transition-colors"
-            aria-label="Abrir menú">
-            <svg id="icon-menu" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-            <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </button>
+                {{-- Botón del Avatar --}}
+                <button @click="open = !open" type="button"
+                    class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-green-300 overflow-hidden">
+                    <span class="sr-only">Abrir menú de usuario</span>
+                    <img class="w-9 h-9 object-cover"
+                        src="{{ auth()->user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) }}"
+                        alt="Avatar de {{ auth()->user()->name }}">
+                </button>
+
+                {{-- Menú Desplegable (Dropdown) --}}
+                <div x-show="open" @click.away="open = false"
+                    class="absolute right-0 top-10 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-xl min-w-[160px]"
+                    style="display: none;">
+                    <div class="px-4 py-3">
+                        <span class="block text-sm text-gray-900">{{ auth()->user()->name }}</span>
+                        <span class="block text-sm text-gray-500 truncate">{{ auth()->user()->email }}</span>
+                    </div>
+                    <ul class="py-2">
+                        <li>
+                            {{-- Formulario para Logout seguro --}}
+                            <form method="POST" action="{{ route('auth.logout') }}">
+                                @csrf
+                                <button type="submit"
+                                    class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                    Cerrar sesión
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        @else
+            <div class="hidden md:flex items-center gap-3">
+                <a href="{{ route('login') }}"
+                    class="text-sm font-medium text-white hover:text-green-100 transition-colors">
+                    Iniciar sesión
+                </a>
+            </div>
+        @endif
 
     </nav>
 
     {{-- Mobile Menu --}}
     <div id="mobile-menu" class="hidden md:hidden bg-white/40 px-4 py-3 space-y-1">
         <div class="pt-2 pb-1 flex flex-col gap-2">
-            <a href="#" class="block rounded-lg px-4 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50">
-                Pruebalo ahora!
+            <a href="{{ route('login') }}"
+                class="block rounded-lg px-4 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50">
+                Iniciar sesión
             </a>
         </div>
     </div>

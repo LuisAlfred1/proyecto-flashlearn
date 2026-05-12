@@ -6,7 +6,7 @@
 
         {{-- Titulo de pagina --}}
         <div class="text-center mb-8 md:mb-8">
-            <h1 class="text-2xl md:text-3xl font-bold text-zinc-900">Genera tus Flashcards</h1>
+            <h1 class="text-2xl md:text-4xl font-bold text-zinc-900">Genera tus Flashcards</h1>
             <p class="text-sm text-zinc-500 mt-2">Elige un tema e idioma y la IA hará el resto</p>
         </div>
 
