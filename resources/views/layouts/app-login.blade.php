@@ -19,8 +19,7 @@
     @stack('styles')
 </head>
 
-<body class="min-h-screen  bg-zinc-50 text-zinc-900 antialiased"
-    style="background: linear-gradient(to bottom, #3bc5693f 0%, transparent 38%) fixed, #fafafa;">
+<body class="min-h-screen text-zinc-900 antialiased">
 
     <x-nav-login />
 
