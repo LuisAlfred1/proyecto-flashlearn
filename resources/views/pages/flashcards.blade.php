@@ -142,8 +142,7 @@
                     {{-- Guardar --}}
                     <button id="btn-guardar"
                         class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium
-                   text-white transition-all duration-200 hover:opacity-90 active:scale-95 cursor-pointer bg-green-600 hover:bg-green-700"
-                        >
+                   text-white transition-all duration-200 hover:opacity-90 active:scale-95 cursor-pointer bg-green-600 hover:bg-green-700">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-4 h-4">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -167,6 +166,15 @@
 
                 </div>
             </header>
+
+            {{-- Esto solo es para pruebas--}}
+            <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 md:gap-4  py-4 sm:px-6 ">
+                @for ($i = 1; $i <= 5; $i++)
+                    <x-card palabra="Palabra {{ $i }}" traduccion="Traducción {{ $i }}"
+                        ejemplo="Ejemplo de uso para la palabra {{ $i }}" />
+                @endfor
+            </div>
 
             <div id="flashcards-grid"
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 px-4 py-4 sm:px-6 lg:px-8">
