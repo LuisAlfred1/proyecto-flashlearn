@@ -30,3 +30,8 @@ Route::get('/auth/google/callback', [SocialAuthController::class, 'callback'])->
 
 //cierra sesión (método POST).
 Route::post('/logout', [SocialAuthController::class, 'logout'])->name('auth.logout');
+
+//Ruta para la página de perfil, esta ruta se llamará desde el botón de perfil en la barra de navegación
+Route::get('/profile', function () {
+    return view('pages.profile'); 
+})->name('profile');
