@@ -12,8 +12,8 @@
 
         {{-- CTA --}}
         <div class="hidden md:flex items-center gap-3">
-            <a href="#" class="text-sm font-medium text-zinc-100 hover:text-zinc-900 transition-colors">
-                Pruebalo ahora!
+            <a href="{{ route('login') }}" class="text-sm font-medium text-white hover:text-green-100 transition-colors">
+                Iniciar sesión
             </a>
         </div>
 
@@ -37,8 +37,8 @@
     {{-- Mobile Menu --}}
     <div id="mobile-menu" class="hidden md:hidden bg-white/40 px-4 py-3 space-y-1">
         <div class="pt-2 pb-1 flex flex-col gap-2">
-            <a href="#" class="block rounded-lg px-4 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50">
-                Pruebalo ahora!
+            <a href="{{ route('login') }}" class="block rounded-lg px-4 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50">
+                Iniciar sesión
             </a>
         </div>
     </div>

@@ -15,6 +15,11 @@ Route::get('/flashcards', [FlashcardController::class, 'index']);
 //agregué la ruta para generar las flashcards, esta ruta se llamará desde el fetch en el archivo flashcards.blade.php
 Route::post('/generate', [FlashcardController::class, 'generate'])->name('flashcards.generate');
 
+//Ruta para la página de login, esta ruta se llamará desde el botón de login en la página de inicio
+Route::get('/login', function () {
+    return view('pages.login');
+})->name('login');
+
 //Google OAuth.
 
 //redirige al login de Google.
