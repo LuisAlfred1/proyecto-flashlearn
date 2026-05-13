@@ -12,20 +12,21 @@
             <div class="bg-white p-8 md:p-12 flex flex-col justify-center items-center">
 
                 {{-- Logo e Ilustración --}}
-                <div class="text-center mb-10 w-full flex flex-col items-center">
+                <div class="text-center mb-2 w-full flex flex-col items-center">
                     <div class="flex justify-center items-center mb-6">
                         <img class="w-full max-w-[400px] object-contain" src="{{ asset('images/heroNuevo.png') }}"
                             alt="FlashLearn - Tarjetas de vocabulario con IA" />
                     </div>
                     <h1 class="text-4xl font-extrabold text-zinc-950 tracking-tight">Bienvenido</h1>
-                    <p class="text-lg text-zinc-600 mt-3">Inicia sesión para guardar tus flashcards</p>
+                    <p class="text-md text-zinc-600 mt-3">Inicia sesión para guardar tus flashcards.
+                        Tus tarjetas estarán disponibles en cualquier momento.</p>
                 </div>
 
                 {{-- Botón Google --}}
                 <div class="w-full max-w-sm">
                     <a href="{{ route('auth.google') }}"
                         class="flex items-center justify-center gap-3 w-full py-3 px-6
-                         border border-zinc-300 bg-white hover:bg-zinc-100 hover:border-zinc-300 transition-all
+                         border border-zinc-300 bg-white hover:bg-zinc-200 hover:border-zinc-300 transition-all
                          text-lg font-semibold text-zinc-800 cursor-pointer mb-3">
                         <svg width="24" height="24" viewBox="0 0 256 262">
                             <path
@@ -42,6 +43,13 @@
                                 fill="#EB4335" />
                         </svg>
                         Continuar con Google
+                    </a>
+
+                    <a href="/flashcards"
+                        class="flex items-center justify-center gap-3 w-full py-3 px-6
+                         border-2 border-zinc-300 bg-zinc-100 hover:border-2 hover:border-zinc-400 transition-all
+                         text-lg font-semibold text-zinc-800 cursor-pointer mb-3">
+                        Continuar sin cuenta
                     </a>
 
                     <p class="text-center text-sm text-zinc-500 leading-relaxed">
