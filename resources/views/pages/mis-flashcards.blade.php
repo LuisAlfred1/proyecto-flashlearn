@@ -2,7 +2,7 @@
 @extends('layouts.app-flashcard')
 
 @section('content')
-    <div class="py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-14">
+    <div class="py-2 max-w-7xl mx-auto px-10 sm:px-12 lg:px-16">
 
         {{-- ===== ESTADO: NO AUTENTICADO ===== --}}
         @guest
@@ -45,7 +45,7 @@
             {{-- Header de la página --}}
             <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
                 <div>
-                    <h1 class="text-2xl md:text-3xl font-bold text-zinc-900">Mis Flashcards</h1>
+                    <h1 class="text-2xl md:text-3xl font-bold text-zinc-900">Mis flashcards</h1>
                     <p class="text-sm text-zinc-500 mt-1">Hola, <strong>{{ auth()->user()->name }}</strong> — aquí están tus
                         sesiones guardadas</p>
                 </div>
@@ -77,8 +77,7 @@
                     <p class="text-sm font-medium text-zinc-600">Aún no tienes flashcards guardadas</p>
                     <p class="text-xs text-zinc-400 mt-1 mb-6">Genera tu primera sesión y guárdala para verla aquí</p>
                     <a href="#"
-                        class="px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90"
-                        style="background: linear-gradient(90deg, #0e76b3 0%, #3bc569 100%);">
+                        class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-[#0e76b3] hover:bg-[#0b6497] text-white transition-all hover:opacity-90">
                         Generar mis primeras flashcards
                     </a>
                 </div>

@@ -438,7 +438,7 @@
 
                     const utterance = new SpeechSynthesisUtterance(text);
                     utterance.lang = langCodeMap[idioma] ?? 'en-US';
-                    utterance.rate = 0.8; // velocidad (1 = normal, 0.9 = un poco más lento)
+                    utterance.rate = 0.7; // velocidad (1 = normal, 0.9 = un poco más lento)
                     utterance.pitch = 1; // tono
 
                     window.speechSynthesis.speak(utterance);
