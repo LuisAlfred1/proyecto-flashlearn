@@ -1,5 +1,5 @@
 {{-- resources/views/pages/mis-flashcards.blade.php --}}
-@extends('layouts.app-clean')
+@extends('layouts.app-flashcard')
 
 @section('content')
     <div class="py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-14">
@@ -49,15 +49,6 @@
                     <p class="text-sm text-zinc-500 mt-1">Hola, <strong>{{ auth()->user()->name }}</strong> — aquí están tus
                         sesiones guardadas</p>
                 </div>
-                <a href="/flashcards"
-                    class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white
-                           transition-all hover:opacity-90 active:scale-95 bg-[#0e76b3] hover:bg-[#0e76b3]">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                        stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                    </svg>
-                    Nueva sesión
-                </a>
             </div>
 
             {{-- Lista de sesiones --}}

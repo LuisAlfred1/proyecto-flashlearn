@@ -43,7 +43,7 @@
                     <div x-show="open" @click.away="open = false"
                         class="absolute right-0 top-8 z-50 my-4 text-base list-none bg-white shadow-md min-w-[160px]"
                         style="display: none;">
-                        <a href="{{ route('flashcards.mis') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border border-gray-200">Mis
+                        <a href="{{ auth()->check() ? route('flashcards.mis') : route('login') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border border-gray-200">Mis
                             flashcards</a>
                     </div>
                 </div>

@@ -12,14 +12,13 @@
             <div class="bg-white p-8 md:p-12 flex flex-col justify-center items-center">
 
                 {{-- Logo e Ilustración --}}
-                <div class="text-center mb-2 w-full flex flex-col items-center">
+                <div class="text-center mb-6 w-full flex flex-col items-center">
                     <div class="flex justify-center items-center mb-6">
                         <img class="w-full max-w-[400px] object-contain" src="{{ asset('images/heroNuevo.png') }}"
                             alt="FlashLearn - Tarjetas de vocabulario con IA" />
                     </div>
                     <h1 class="text-4xl font-extrabold text-zinc-950 tracking-tight">Bienvenido</h1>
-                    <p class="text-md text-zinc-600 mt-3">Inicia sesión para guardar tus flashcards.
-                        Tus tarjetas estarán disponibles en cualquier momento.</p>
+                    <p class="text-md text-zinc-600 mt-3">Inicia sesión para guardar y ver tus flashcards.</p>
                 </div>
 
                 {{-- Botón Google --}}
