@@ -35,3 +35,8 @@ Route::post('/logout', [SocialAuthController::class, 'logout'])->name('auth.logo
 Route::get('/profile', function () {
     return view('pages.profile'); 
 })->name('profile');
+
+//Ruta para la página de mis flashcards, esta ruta se llamará desde el botón de mis flashcards en la barra de navegación
+Route::get('/mis-flashcards', function () {
+    return view('pages.mis-flashcards');
+})->name('flashcards.mis');
