@@ -15,7 +15,7 @@ class FlashcardSession extends Model
         'target_language',
     ];
 
-    //una sesión pertenece a un usuario.
+    //Una sesión pertenece a un usuario.
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -24,6 +24,6 @@ class FlashcardSession extends Model
     //Una sesión tiene muchas flashcards.
     public function flashcards()
     {
-        return $this->hasMany(Flashcard::class, 'session_id');
+        return $this->hasMany(Flashcard::class, 'flashcard_session_id');
     }
 }

@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('session_id',40)->nullable();//para agrupar 10 tarjetas de una misma peticion
             $table->string('topic', 100);
-            $table->string('target_language',3);
+            $table->string('target_language',50);
             $table->string('original_word');
             $table->string('translated_word');
             $table->text('example_sentence');

@@ -6,23 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('flashcards', function (Blueprint $table) {
-            //
+            $table->unsignedBigInteger('flashcard_session_id')->nullable()->after('session_id');
+            $table->foreign('flashcard_session_id')->references('id')->on('flashcard_sessions')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('flashcards', function (Blueprint $table) {
-            //
+            $table->dropForeign(['flashcard_session_id']);
+            $table->dropColumn('flashcard_session_id');
         });
     }
 };
