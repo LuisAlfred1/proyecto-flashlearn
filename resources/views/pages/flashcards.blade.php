@@ -139,7 +139,12 @@
                 <div class="flex items-center gap-2">
 
                     {{-- Guardar --}}
-                    <button id="btn-guardar"
+
+                    {{-- Después se hará una validación, si el usuario se autentica, entonces los flashcards serán guardados
+                        y si no, entonces se le redirigirá a la página de login para que pueda acceder a esta función. Por eso el href apunta a login, pero solo se activará si no está autenticado.
+                        si el usuario no quiere autenticarse, entonces se redigira a la página de inicio sin guardar, pero si se autentica, entonces se guardará y se redirigirá a la página de flashcards.
+                    --}}
+                    <a id="btn-guardar" href="{{ route('login') }}"
                         class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium
                    text-white transition-all duration-200 hover:opacity-90 active:scale-95 cursor-pointer bg-green-600 hover:bg-green-700">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -148,7 +153,7 @@
                                 d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
                         </svg>
                         Guardar
-                    </button>
+                    </a>
 
                     {{-- Limpiar --}}
                     <button id="btn-limpiar"
@@ -298,13 +303,30 @@
                                     <div class="bg-white border border-[#3bc569] rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
                                         <div class="flex justify-between items-center">
                                             <h3 class="text-lg font-bold text-zinc-900">${card.palabra}</h3>
-                                            <button class="text-zinc-400 hover:text-zinc-600 transition-colors hover:scale-110 cursor-pointer" title="Escuchar pronunciación">
-                                                <img src="{{ asset('images/speaker.svg') }}" class="w-5 h-5" alt="Icono de sonido">
+                                            <button
+                                                onclick="speakText('${card.palabra}', '${data.language}')"
+                                                class="text-zinc-400 hover:text-[#0e76b3] transition-colors hover:scale-110 cursor-pointer p-1 rounded-lg hover:bg-blue-50"
+                                                title="Escuchar pronunciación">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+                                                </svg>
                                             </button>
                                         </div>
                                         <p class="text-sm text-zinc-700">${card.traduccion}</p>
-                                        <div class="border-t border-zinc-100 pt-3 mt-auto">
+                                        <div class="border-t border-zinc-100 pt-3 mt-auto flex justify-between items-start gap-2">
                                             <p class="text-xs text-zinc-600 italic">"${card.ejemplo}"</p>
+                                            <button
+                                                onclick="speakText('${card.ejemplo}', '${data.language}')"
+                                                class="text-zinc-300 hover:text-[#3bc569] transition-colors hover:scale-110 cursor-pointer flex-shrink-0 p-1 rounded-lg hover:bg-green-50"
+                                                title="Escuchar ejemplo">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+                                                </svg>
+                                            </button>
                                         </div>
                                     </div>
                                 `).join('');
@@ -393,6 +415,34 @@
                         btnGen.style.background = 'linear-gradient(90deg, #0e76b3 0%, #3bc569 100%)';
                     });
                 });
+
+                // --- Web Speech API ---
+                const langCodeMap = {
+                    'Inglés': 'en-US',
+                    'Francés': 'fr-FR',
+                    'Alemán': 'de-DE',
+                    'Italiano': 'it-IT',
+                    'Portugués': 'pt-BR',
+                    'Japonés': 'ja-JP',
+                    'Chino': 'zh-CN',
+                };
+
+                function speakText(text, idioma) {
+                    if (!window.speechSynthesis) {
+                        alert('Tu navegador no soporta síntesis de voz.');
+                        return;
+                    }
+
+                    // Cancela cualquier voz que esté sonando
+                    window.speechSynthesis.cancel();
+
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = langCodeMap[idioma] ?? 'en-US';
+                    utterance.rate = 0.8; // velocidad (1 = normal, 0.9 = un poco más lento)
+                    utterance.pitch = 1; // tono
+
+                    window.speechSynthesis.speak(utterance);
+                }
             </script>
         @endpush
     </div>
