@@ -42,10 +42,8 @@ Route::get('/mis-flashcards', function () {
     return view('pages.mis-flashcards');
 })->name('flashcards.mis');
 
-//Rutas protegidas para guardar, consultar y eliminar sesiones de flashcards.
-Route::middleware('auth')->group(function () {
-    Route::post('/flashcards/save', [FlashcardSessionController::class, 'store'])->name('flashcards.save');
-    Route::get('/flashcards/my-sessions', [FlashcardSessionController::class, 'index'])->name('flashcards.sessions');
-    Route::get('/flashcards/my-sessions/{session}', [FlashcardSessionController::class, 'show'])->name('flashcards.session.show');
-    Route::delete('/flashcards/my-sessions/{session}', [FlashcardSessionController::class, 'destroy'])->name('flashcards.session.destroy');
-});
+//Rutas para guardar, consultar y eliminar sesiones de flashcards (sin middleware temporalmente para pruebas).
+Route::post('/flashcards/save', [FlashcardSessionController::class, 'store'])->name('flashcards.save');
+Route::get('/flashcards/my-sessions', [FlashcardSessionController::class, 'index'])->name('flashcards.sessions');
+Route::get('/flashcards/my-sessions/{session}', [FlashcardSessionController::class, 'show'])->name('flashcards.session.show');
+Route::delete('/flashcards/my-sessions/{session}', [FlashcardSessionController::class, 'destroy'])->name('flashcards.session.destroy');

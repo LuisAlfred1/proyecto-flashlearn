@@ -26,4 +26,10 @@ class FlashcardSession extends Model
     {
         return $this->hasMany(Flashcard::class, 'flashcard_session_id');
     }
+
+    //Scope para ordenar por fecha de creación descendente.
+    public function scopeRecent($query)
+    {
+        return $query->orderBy('created_at', 'desc');
+    }
 }

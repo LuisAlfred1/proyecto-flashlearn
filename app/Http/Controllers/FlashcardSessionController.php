@@ -51,14 +51,14 @@ class FlashcardSessionController extends Controller
     {
         $sessions = FlashcardSession::where('user_id', auth()->id())
             ->withCount('flashcards')
-            ->orderBy('created_at', 'desc')
+            ->recent()
             ->get()
             ->map(function ($session) {
                 return [
-                    'id'              => $session->id,
-                    'topic'           => $session->topic,
-                    'target_language' => $session->target_language,
-                    'created_at'      => $session->created_at->toDateString(),
+                    'id'               => $session->id,
+                    'topic'            => $session->topic,
+                    'target_language'  => $session->target_language,
+                    'created_at'       => $session->created_at->toDateString(),
                     'flashcards_count' => $session->flashcards_count,
                 ];
             });
