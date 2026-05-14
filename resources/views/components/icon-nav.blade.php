@@ -17,16 +17,6 @@
 
             <!-- Derecha: Acciones -->
             <div class="flex items-center space-x-5">
-                <!-- Historial -->
-                <a href="#"
-                    class="text-zinc-500 hover:text-[#3bc569] transition-colors duration-200 p-1.5 hover:bg-zinc-100 rounded-full"
-                    title="Historial">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
-                    </svg>
-                </a>
                 <div class="relative flex items-center gap-3" x-data="{ open: false }">
                     <!-- Menú / Opciones -->
                     <button @click="open = !open" type="button"
