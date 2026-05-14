@@ -5,8 +5,23 @@
     <div class="py-8 md:py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- Toast de notificaciones (inicialmente oculto) --}}
-        <div id="toast" class="hidden fixed top-4 right-4 border-2 border-green-600 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg">
+        <div id="toast"
+            class="hidden fixed top-4 right-4 border-2 border-green-500 bg-green-400 text-white px-4 py-2 rounded-md shadow-lg">
             Guardando flashcards...
+        </div>
+
+        {{-- Modal para notificar al usuario que debe iniciar sesión --}}
+        <div id="login-modal"
+            class="hidden fixed inset-0 bg-black/60 bg-opacity-50 flex items-center justify-center p-4 z-60">
+            <div class="bg-white rounded-lg shadow-lg p-6 max-w-md">
+                <h2 class="text-xl font-bold text-zinc-900 mb-4">Debes iniciar sesión</h2>
+                <p class="text-zinc-600 mb-6">Para guardar tus flashcards, por favor inicia sesión.</p>
+                <div class="flex justify-end gap-4">
+                    <button id="cancelar-btn"
+                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Cancelar</button>
+                    <button id="login-btn" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Iniciar sesión</button>
+                </div>
+            </div>
         </div>
 
         {{-- Titulo de pagina --}}
@@ -561,11 +576,19 @@
                     @guest
                     // Si no está autenticado, guardar en localStorage y redirigir al login
                     if (savePendingFlashcards()) {
-                        alert(
-                            'Por favor, inicia sesión para guardar tus flashcards.');
+
+                        //En vez de usar un alert, se puede usar un modal que diga "Por favor, inicia sesión para guardar tus flashcards." con un botón que diga "Ir a Login" y otro que diga "Cancelar" (que simplemente cierre el modal). El modal se puede implementar con HTML/CSS y mostrarlo al hacer clic en guardar, en vez de usar alert.
+                        //alert('Por favor, inicia sesión para guardar tus flashcards.');
+
+                        document.getElementById('login-modal').classList.remove('hidden');
+                        document.getElementById("login-btn").onclick = function() {
+                            window.location.href = '{{ route('login') }}';
+                        };
+                        document.getElementById("cancelar-btn").onclick = function() {
+                            document.getElementById('login-modal').classList.add('hidden');
+                        };
+
                     }
-                    window.location.href = '{{ route('login') }}';
-                    return;
                 @endguest
 
                 @auth
