@@ -1,9 +1,15 @@
 {{-- resources/views/components/hero.blade.php --}}
 
-<div class="pt-14 gradient">
+<div class="pt-14 gradient" x-data="{ visible: false }" x-init="setTimeout(() => visible = true, 100)">
     <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 flex flex-wrap flex-col md:flex-row items-center">
+        
         {{-- Columna izquierda --}}
-        <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
+        <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left"
+             x-show="visible"
+             x-transition:enter="transition ease-out duration-700"
+             x-transition:enter-start="opacity-0 translate-x-[-30px]"
+             x-transition:enter-end="opacity-100 translate-x-0">
+            
             <p class="uppercase tracking-widest text-sm font-semibold text-white/80 w-full mb-2">
                 Aprende idiomas con IA
             </p>
@@ -32,14 +38,19 @@
         </div>
 
         {{-- Columna derecha --}}
-        <div class="w-full md:w-3/5 py-16 text-center">
+        <div class="w-full md:w-3/5 py-16 text-center"
+             x-show="visible"
+             x-transition:enter="transition ease-out duration-700 delay-200"
+             x-transition:enter-start="opacity-0 translate-x-[30px] scale-95"
+             x-transition:enter-end="opacity-100 translate-x-0 scale-100">
+            
             <img class="w-full md:w-5/5 z-50 drop-shadow-2xl" src="{{ asset('images/heroNuevo.png') }}"
                 alt="FlashLearn - Tarjetas de vocabulario con IA" />
         </div>
     </div>
 </div>
 
-{{-- Ola de transición --}}
+{{-- Ola de transición (sin cambios) --}}
 <div class="relative -mt-12 lg:-mt-40 overflow-hidden">
     <svg viewBox="0 0 1428 174" xmlns="http://www.w3.org/2000/svg">
         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
