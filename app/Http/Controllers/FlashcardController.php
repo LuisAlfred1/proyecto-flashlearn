@@ -107,9 +107,9 @@ class FlashcardController extends Controller
 
         $flashcards = collect($decoded)->map(function ($item) {
             return [
-                'palabra' => $item['word'] ?? '',
-                'traduccion' => $item['translation'] ?? '',
-                'ejemplo' => $item['example'] ?? '',
+                'word' => $item['word'] ?? '',
+                'translation' => $item['translation'] ?? '',
+                'example' => $item['example'] ?? '',
             ];
         })->values();
 

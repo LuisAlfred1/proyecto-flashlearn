@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FlashcardController;
-use App\Http\Controllers\SocialAuthController; // <- agregar esta línea
+use App\Http\Controllers\SocialAuthController; 
+use App\Http\Controllers\FlashcardSessionController;
 
 //Luis: Añadí la ruta para la página de inicio (es una bienvenida a los usuarios)
 Route::get('/', function () {
@@ -40,3 +41,11 @@ Route::get('/profile', function () {
 Route::get('/mis-flashcards', function () {
     return view('pages.mis-flashcards');
 })->name('flashcards.mis');
+
+//Rutas protegidas para guardar, consultar y eliminar sesiones de flashcards.
+Route::middleware('auth')->group(function () {
+    Route::post('/flashcards/save', [FlashcardSessionController::class, 'store'])->name('flashcards.save');
+    Route::get('/flashcards/my-sessions', [FlashcardSessionController::class, 'index'])->name('flashcards.sessions');
+    Route::get('/flashcards/my-sessions/{session}', [FlashcardSessionController::class, 'show'])->name('flashcards.session.show');
+    Route::delete('/flashcards/my-sessions/{session}', [FlashcardSessionController::class, 'destroy'])->name('flashcards.session.destroy');
+});
