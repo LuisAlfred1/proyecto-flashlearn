@@ -11,7 +11,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        //Se excluyen las rutas de flashcards del CSRF para permitir pruebas desde Postman.
+        $middleware->validateCsrfTokens(except: [
+            '/flashcards/save',
+            '/flashcards/my-sessions/*',
+            '/flashcards/my-sessions',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
