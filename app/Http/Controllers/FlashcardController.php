@@ -31,7 +31,13 @@ class FlashcardController extends Controller
         ]);
 
         $apiKey = env('GEMINI_API_KEY');
-        $model = 'gemini-2.5-flash-lite';
+
+        //Se definen los modelos en orden de prioridad. Si uno falla por límite, se intenta con el siguiente.
+        $models = [
+            'gemini-2.5-flash-lite',
+            'gemini-2.5-flash',
+            'gemini-3-flash-preview',
+        ];
 
         if (!$apiKey) {
             return response()->json([
@@ -57,25 +63,33 @@ class FlashcardController extends Controller
             $promptTemplate
         );
 
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'X-goog-api-key' => $apiKey,
-        ])->post(
-            "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent",
-            [
-                'contents' => [
-                    [
-                        'parts' => [
-                            [
-                                'text' => $prompt
+        //Se intenta con cada modelo hasta que uno responda correctamente.
+        $response = null;
+        foreach ($models as $model) {
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'X-goog-api-key' => $apiKey,
+            ])->post(
+                "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent",
+                [
+                    'contents' => [
+                        [
+                            'parts' => [
+                                [
+                                    'text' => $prompt
+                                ]
                             ]
                         ]
                     ]
                 ]
-            ]
-        );
+            );
 
-        if (!$response->successful()) {
+            if ($response->successful()) {
+                break;
+            }
+        }
+
+        if (!$response || !$response->successful()) {
             return response()->json([
                 'ok' => false,
                 'message' => 'Error al consumir la API generativa.',
