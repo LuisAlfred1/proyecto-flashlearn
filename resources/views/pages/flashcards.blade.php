@@ -4,6 +4,11 @@
 @section('content')
     <div class="py-8 md:py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
+        {{-- Toast de notificaciones (inicialmente oculto) --}}
+        <div id="toast" class="hidden fixed top-4 right-4 border-2 border-green-600 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg">
+            Guardando flashcards...
+        </div>
+
         {{-- Titulo de pagina --}}
         <div class="text-center mb-8 md:mb-8">
             <h1 class="text-2xl md:text-4xl font-bold text-zinc-900">Genera tus Flashcards</h1>
@@ -262,7 +267,15 @@
                     }
 
                     // Mostrar notificación
-                    alert('Guardando flashcards...');
+                    //En vez de usar alert, se puede usar una notificación más elegante. como un toast en parte superior centrado que diga "Guardando flashcards..." y que desaparezca después de 3 segundos.
+                    // alert('Guardando flashcards...');
+                    const toast = document.getElementById('toast');
+                    toast.classList.remove('hidden');
+
+                    // Ocultar notificación después de 3 segundos
+                    setTimeout(() => {
+                        toast.classList.add('hidden');
+                    }, 3000);
 
                     // Cambiar botón a estado de carga
                     btn.disabled = true;
