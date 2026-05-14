@@ -4,7 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property string $topic
+ * @property string $target_language
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property-read \App\Models\User $user
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Flashcard[] $flashcards
+ */
 class FlashcardSession extends Model
 {
     use HasFactory;
@@ -16,13 +28,13 @@ class FlashcardSession extends Model
     ];
 
     //Una sesión pertenece a un usuario.
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     //Una sesión tiene muchas flashcards.
-    public function flashcards()
+    public function flashcards(): HasMany
     {
         return $this->hasMany(Flashcard::class, 'flashcard_session_id');
     }

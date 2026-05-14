@@ -12,6 +12,7 @@ class FlashcardSessionController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            
             'topic'       => 'required|string|max:100',
             'language'    => 'required|string|max:50',
             'flashcards'  => 'required|array|min:1',

@@ -30,7 +30,7 @@
                         style="background: linear-gradient(90deg, #0e76b3 0%, #3bc569 100%);">
                         Iniciar sesión con Google
                     </a>
-                    <a href="#"
+                    <a href="/flashcards"
                         class="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold
                                bg-zinc-100 text-zinc-700 hover:bg-zinc-200 transition-all active:scale-95">
                         Generar flashcards sin cuenta
@@ -76,7 +76,7 @@
                     </div>
                     <p class="text-sm font-medium text-zinc-600">Aún no tienes flashcards guardadas</p>
                     <p class="text-xs text-zinc-400 mt-1 mb-6">Genera tu primera sesión y guárdala para verla aquí</p>
-                    <a href="#"
+                    <a href="/flashcards"
                         class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-[#0e76b3] hover:bg-[#0b6497] text-white transition-all hover:opacity-90">
                         Generar mis primeras flashcards
                     </a>
@@ -168,7 +168,7 @@
                 // --- Cargar sesiones al entrar ---
                 async function loadSessions() {
                     try {
-                        const res = await fetch('#', {
+                        const res = await fetch('{{ route("flashcards.sessions") }}', {
                             headers: {
                                 'Accept': 'application/json'
                             }

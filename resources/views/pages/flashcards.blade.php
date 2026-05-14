@@ -144,16 +144,16 @@
                         y si no, entonces se le redirigirá a la página de login para que pueda acceder a esta función. Por eso el href apunta a login, pero solo se activará si no está autenticado.
                         si el usuario no quiere autenticarse, entonces se redigira a la página de inicio sin guardar, pero si se autentica, entonces se guardará y se redirigirá a la página de flashcards.
                     --}}
-                    <a id="btn-guardar" href="{{ route('login') }}"
+                    <button id="btn-guardar"
                         class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium
-                   text-white transition-all duration-200 hover:opacity-90 active:scale-95 cursor-pointer bg-green-600 hover:bg-green-700">
+                        text-white transition-all duration-200 hover:opacity-90 active:scale-95 cursor-pointer bg-green-600 hover:bg-green-700">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-4 h-4">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
                         </svg>
                         Guardar
-                    </a>
+                    </button>
 
                     {{-- Limpiar --}}
                     <button id="btn-limpiar"
@@ -216,6 +216,9 @@
         </div>
         @push('scripts')
             <script>
+                // Variable global para almacenar las flashcards generadas
+                let currentFlashcards = [];
+
                 // --- Lógica del Formulario ---
                 document.getElementById('flashcard-form').addEventListener('submit', function(e) {
                     e.preventDefault();
@@ -258,6 +261,9 @@
                         .then(data => {
                             if (data.ok) {
                                 console.log('¡Generado con éxito!', data);
+
+                                // Guardar las flashcards en la variable global
+                                currentFlashcards = data.flashcards;
 
                                 const flagMap = {
                                     'Inglés': 'fi-us',
@@ -302,9 +308,9 @@
                                     grid.innerHTML = pageCards.map(card => `
                                     <div class="bg-white border border-[#3bc569] rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
                                         <div class="flex justify-between items-center">
-                                            <h3 class="text-lg font-bold text-zinc-900">${card.palabra}</h3>
+                                            <h3 class="text-lg font-bold text-zinc-900">${card.word}</h3>
                                             <button
-                                                onclick="speakText('${card.palabra}', '${data.language}')"
+                                                onclick="speakText('${card.word}', '${data.language}')"
                                                 class="text-zinc-400 hover:text-[#0e76b3] transition-colors hover:scale-110 cursor-pointer p-1 rounded-lg hover:bg-blue-50"
                                                 title="Escuchar pronunciación">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -314,11 +320,11 @@
                                                 </svg>
                                             </button>
                                         </div>
-                                        <p class="text-sm text-zinc-700">${card.traduccion}</p>
+                                        <p class="text-sm text-zinc-700">${card.translation}</p>
                                         <div class="border-t border-zinc-100 pt-3 mt-auto flex justify-between items-start gap-2">
-                                            <p class="text-xs text-zinc-600 italic">"${card.ejemplo}"</p>
+                                            <p class="text-xs text-zinc-600 italic">"${card.example}"</p>
                                             <button
-                                                onclick="speakText('${card.ejemplo}', '${data.language}')"
+                                                onclick="speakText('${card.example}', '${data.language}')"
                                                 class="text-zinc-300 hover:text-[#3bc569] transition-colors hover:scale-110 cursor-pointer flex-shrink-0 p-1 rounded-lg hover:bg-green-50"
                                                 title="Escuchar ejemplo">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -443,6 +449,60 @@
 
                     window.speechSynthesis.speak(utterance);
                 }
+
+                // --- Lógica del botón Guardar ---
+                document.getElementById('btn-guardar').addEventListener('click', function() {
+
+                    @guest
+                    // Si no está autenticado, redirige al login
+                    window.location.href = '{{ route('login') }}';
+                    return;
+                @endguest
+
+                @auth
+                // Si está autenticado, guarda la sesión
+                const tema = document.getElementById('cards-tema').textContent;
+                const language = document.getElementById('cards-idioma').textContent;
+
+                if (!tema || !language) {
+                    alert('Primero genera unas flashcards.');
+                    return;
+                }
+
+                // Cambia el botón a estado de carga
+                const btn = document.getElementById('btn-guardar'); btn.disabled = true; btn.textContent = 'Guardando...';
+
+                fetch('{{ route('flashcards.save') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        topic: tema,
+                        language: language,
+                        flashcards: currentFlashcards // ← el array de flashcards actual
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.ok) {
+                        window.location.href = '{{ route('flashcards.mis') }}';
+                        currentFlashcards = data.flashcards; // Actualiza el array global con las flashcards guardadas.
+                    } else {
+                        alert('Error al guardar: ' + data.message);
+                        btn.disabled = false;
+                        btn.textContent = 'Guardar';
+                    }
+                })
+                .catch(() => {
+                    alert('Error de conexión al guardar.');
+                    btn.disabled = false;
+                    btn.textContent = 'Guardar';
+                });
+                @endauth
+                });
             </script>
         @endpush
     </div>
