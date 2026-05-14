@@ -493,6 +493,27 @@
 
                             } else {
                                 // ← el else correcto, fuera de renderPage
+                                //Aqui se puede valida el limite de uso de la IA, si el error es por limite alcanzado, entonces se puede mostrar un mensaje que diga "Has alcanzado el límite de uso gratuito. Por favor, espera 24 horas"
+                                //Muestra un svg
+                                if (data.message === "Has alcanzado el límite de uso gratuito. Por favor, espera 24 horas.") {
+                                    grid.innerHTML = `
+                                    <div class="col-span-full flex flex-col items-center justify-center py-16 px-4">
+                                        <div class="max-w-2xl w-full bg-white rounded-2xl p-4 text-center">
+                                            <!-- Icono animado o estático -->
+                                            <div class="mx-auto flex items-center justify-center h-14 w-14 rounded-full bg-amber-50 mb-6">
+                                                <svg class="h-8 w-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                            </div>
+                                            
+                                            <h3 class="text-xl font-bold text-slate-800 mb-2">¡Límite diario alcanzado!</h3>
+                                            <p class="text-slate-600 leading-relaxed">
+                                                Has aprovechado todas tus consultas gratuitas por hoy. Para mantener la calidad del servicio, por favor vuelve en <span class="font-bold text-amber-600">24 horas</span>.
+                                            </p>
+                                        </div>
+                                    </div>
+                                `;
+                                } else {
                                 grid.innerHTML = `
                                     <div class="col-span-full flex flex-col items-center justify-center py-16 text-red-400">
                                         <p class="text-sm font-medium">Error: ${data.message}</p>
