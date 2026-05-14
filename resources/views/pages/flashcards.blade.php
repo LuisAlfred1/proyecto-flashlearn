@@ -219,6 +219,98 @@
                 // Variable global para almacenar las flashcards generadas
                 let currentFlashcards = [];
 
+                // Función para guardar flashcards en localStorage
+                function savePendingFlashcards() {
+                    const tema = document.getElementById('cards-tema').textContent;
+                    const language = document.getElementById('cards-idioma').textContent;
+
+                    if (!tema || !language || currentFlashcards.length === 0) {
+                        return false;
+                    }
+
+                    localStorage.setItem('pendingFlashcards', JSON.stringify({
+                        tema: tema,
+                        language: language,
+                        flashcards: currentFlashcards,
+                        timestamp: Date.now()
+                    }));
+
+                    return true;
+                }
+
+                // Función para guardar flashcards pendientes (después de autenticarse)
+                function savePendingFlashcardsToServer() {
+                    const pending = localStorage.getItem('pendingFlashcards');
+
+                    if (!pending) {
+                        return;
+                    }
+
+                    const data = JSON.parse(pending);
+                    const btn = document.getElementById('btn-guardar');
+
+                    // Actualizar UI con datos pendientes
+                    currentFlashcards = data.flashcards;
+                    document.getElementById('cards-tema').textContent = data.tema;
+                    document.getElementById('cards-idioma').textContent = data.language;
+
+                    // Mostrar header si no está visible
+                    const cardsHeader = document.getElementById('cards-header');
+                    if (cardsHeader && cardsHeader.classList.contains('hidden')) {
+                        cardsHeader.classList.remove('hidden');
+                        cardsHeader.classList.add('flex');
+                    }
+
+                    // Mostrar notificación
+                    alert('Guardando flashcards...');
+
+                    // Cambiar botón a estado de carga
+                    btn.disabled = true;
+                    btn.textContent = 'Guardando...';
+
+                    // Hacer fetch para guardar
+                    fetch('{{ route('flashcards.save') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                topic: data.tema,
+                                language: data.language,
+                                flashcards: data.flashcards
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(result => {
+                            if (result.ok) {
+                                // Limpiar localStorage
+                                localStorage.removeItem('pendingFlashcards');
+
+                                // Redirigir a mis flashcards
+                                window.location.href = '{{ route('flashcards.mis') }}';
+                            } else {
+                                alert('Error al guardar: ' + result.message);
+                                btn.disabled = false;
+                                btn.textContent = 'Guardar';
+                            }
+                        })
+                        .catch(() => {
+                            alert('Error de conexión al guardar.');
+                            btn.disabled = false;
+                            btn.textContent = 'Guardar';
+                        });
+                }
+
+                // Al cargar la página, verificar si hay flashcards pendientes
+                document.addEventListener('DOMContentLoaded', function() {
+                    @auth
+                    // Si está autenticado y hay flashcards pendientes, guardarlas
+                    setTimeout(savePendingFlashcardsToServer, 500);
+                @endauth
+                });
+
                 // --- Lógica del Formulario ---
                 document.getElementById('flashcard-form').addEventListener('submit', function(e) {
                     e.preventDefault();
@@ -454,7 +546,11 @@
                 document.getElementById('btn-guardar').addEventListener('click', function() {
 
                     @guest
-                    // Si no está autenticado, redirige al login
+                    // Si no está autenticado, guardar en localStorage y redirigir al login
+                    if (savePendingFlashcards()) {
+                        alert(
+                            'Por favor, inicia sesión para guardar tus flashcards.');
+                    }
                     window.location.href = '{{ route('login') }}';
                     return;
                 @endguest
