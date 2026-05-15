@@ -4,14 +4,33 @@
 @section('content')
     <div class="py-2 max-w-7xl mx-auto px-10 sm:px-12 lg:px-16">
 
+        {{-- Modal si desea eliminar la sesión --}}
+        <div id="delete-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div class="bg-white rounded-xl p-6 w-full max-w-sm text-center">
+                <h3 class="text-lg font-bold text-zinc-900 mb-4">¿Eliminar esta sesión?</h3>
+                <p class="text-sm text-zinc-500 mb-6">Esta acción no se puede deshacer. Se eliminarán las 10 tarjetas de esta
+                    sesión.</p>
+                <div class="flex justify-center gap-4">
+                    <button id="confirm-delete"
+                        class="px-4 py-2 rounded-xl bg-red-50 text-red-500 hover:bg-red-100 transition-all">
+                        Sí, eliminar
+                    </button>
+                    <button id="cancel-delete"
+                        class="px-4 py-2 rounded-xl bg-zinc-100 text-zinc-700 hover:bg-zinc-200 transition-all">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+
         {{-- ===== ESTADO: NO AUTENTICADO ===== --}}
         @guest
             <div class="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
 
                 <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6"
                     style="background: linear-gradient(135deg, #0e76b320, #3bc56920)">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0e76b3"
-                        class="w-8 h-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="#0e76b3" class="w-8 h-8">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
                     </svg>
@@ -168,7 +187,7 @@
                 // --- Cargar sesiones al entrar ---
                 async function loadSessions() {
                     try {
-                        const res = await fetch('{{ route("flashcards.sessions") }}', {
+                        const res = await fetch('{{ route('flashcards.sessions') }}', {
                             headers: {
                                 'Accept': 'application/json'
                             }
@@ -306,14 +325,21 @@
                     document.getElementById('sessions-list').classList.add('flex');
                 });
 
-                // --- Eliminar sesión ---
-                document.getElementById('btn-delete-session').addEventListener('click', async function() {
-                    const sessionId = this.dataset.sessionId;
+                // --- Eventos del modal (globales) ---
+                let currentSessionIdToDelete = null;
 
-                    if (!confirm('¿Eliminar esta sesión y sus 10 tarjetas?')) return;
+                // Cuando hace clic en eliminar sesión, muestra el modal
+                document.getElementById('btn-delete-session').addEventListener('click', function() {
+                    currentSessionIdToDelete = this.dataset.sessionId;
+                    document.getElementById('delete-modal').classList.remove('hidden');
+                });
+
+                // Cuando confirma la eliminación
+                document.getElementById('confirm-delete').addEventListener('click', async () => {
+                    if (!currentSessionIdToDelete) return;
 
                     try {
-                        const res = await fetch(`/flashcards/my-sessions/${sessionId}`, {
+                        const res = await fetch(`/flashcards/my-sessions/${currentSessionIdToDelete}`, {
                             method: 'DELETE',
                             headers: {
                                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
@@ -323,14 +349,28 @@
                         const data = await res.json();
 
                         if (data.ok) {
+                            // Cerrar el modal
+                            document.getElementById('delete-modal').classList.add('hidden');
+
+                            // Limpiar y recargar
                             document.getElementById('session-detail').classList.add('hidden');
                             document.getElementById('sessions-list').innerHTML = '';
                             document.getElementById('loading-state').classList.remove('hidden');
-                            loadSessions(); // recarga la lista
+                            loadSessions();
+
+                            currentSessionIdToDelete = null;
+                        } else {
+                            alert('Error al eliminar: ' + data.message);
                         }
                     } catch (e) {
-                        alert('Error al eliminar la sesión.');
+                        alert('Error de conexión al eliminar la sesión.');
                     }
+                });
+
+                // Cuando cancela la eliminación
+                document.getElementById('cancel-delete').addEventListener('click', () => {
+                    document.getElementById('delete-modal').classList.add('hidden');
+                    currentSessionIdToDelete = null;
                 });
 
                 // Cargar al iniciar
