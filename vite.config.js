@@ -7,15 +7,9 @@ export default defineConfig({
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
-            buildDirectory: 'build',
         }),
         tailwindcss(),
     ],
-    build: {
-        manifest: true,
-        outDir: 'public/build',
-        emptyOutDir: true,
-    },
     server: {
         watch: {
             ignored: ['**/storage/framework/views/**'],
