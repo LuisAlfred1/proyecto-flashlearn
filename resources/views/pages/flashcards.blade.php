@@ -19,7 +19,8 @@
                 <div class="flex justify-end gap-4">
                     <button id="cancelar-btn"
                         class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Cancelar</button>
-                    <button id="login-btn" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Iniciar sesión</button>
+                    <button id="login-btn" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Iniciar
+                        sesión</button>
                 </div>
             </div>
         </div>
@@ -412,8 +413,6 @@
                                 cardsTema.textContent = data.tema;
                                 cardsIdioma.textContent = data.language;
 
-
-                                // Renderizar las cards
                                 // Renderizar las cards con paginación
                                 const flashcards = data.flashcards;
                                 const cardsPerPage = 5;
@@ -426,36 +425,36 @@
                                     const pageCards = flashcards.slice(start, end);
 
                                     grid.innerHTML = pageCards.map(card => `
-                                    <div class="bg-white border border-[#3bc569] rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
-                                        <div class="flex justify-between items-center">
-                                            <h3 class="text-lg font-bold text-zinc-900">${card.word}</h3>
-                                            <button
-                                                onclick="speakText('${card.word}', '${data.language}')"
-                                                class="text-zinc-400 hover:text-[#0e76b3] transition-colors hover:scale-110 cursor-pointer p-1 rounded-lg hover:bg-blue-50"
-                                                title="Escuchar pronunciación">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                        <p class="text-sm text-zinc-700">${card.translation}</p>
-                                        <div class="border-t border-zinc-100 pt-3 mt-auto flex justify-between items-start gap-2">
-                                            <p class="text-xs text-zinc-600 italic">"${card.example}"</p>
-                                            <button
-                                                onclick="speakText('${card.example}', '${data.language}')"
-                                                class="text-zinc-300 hover:text-[#3bc569] transition-colors hover:scale-110 cursor-pointer flex-shrink-0 p-1 rounded-lg hover:bg-green-50"
-                                                title="Escuchar ejemplo">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                    stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
-                                                </svg>
-                                            </button>
-                                        </div>
+                                <div class="bg-white border border-[#3bc569] rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+                                    <div class="flex justify-between items-center">
+                                        <h3 class="text-lg font-bold text-zinc-900">${card.word}</h3>
+                                        <button
+                                            onclick="speakText('${card.word}', '${data.language}')"
+                                            class="text-zinc-400 hover:text-[#0e76b3] transition-colors hover:scale-110 cursor-pointer p-1 rounded-lg hover:bg-blue-50"
+                                            title="Escuchar pronunciación">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+                                            </svg>
+                                        </button>
                                     </div>
-                                `).join('');
+                                    <p class="text-sm text-zinc-700">${card.translation}</p>
+                                    <div class="border-t border-zinc-100 pt-3 mt-auto flex justify-between items-start gap-2">
+                                        <p class="text-xs text-zinc-600 italic">"${card.example}"</p>
+                                        <button
+                                            onclick="speakText('${card.example}', '${data.language}')"
+                                            class="text-zinc-300 hover:text-[#3bc569] transition-colors hover:scale-110 cursor-pointer flex-shrink-0 p-1 rounded-lg hover:bg-green-50"
+                                            title="Escuchar ejemplo">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('');
 
                                     // Actualizar controles de paginación
                                     document.getElementById('page-info').textContent = `${page} / ${totalPages}`;
@@ -487,48 +486,46 @@
                                 };
 
                                 // Activar scroll listener del header
-                                // Activar scroll listener del header
                                 const cardsHeaderSticky = document.getElementById('cards-header');
                                 cardsHeaderSticky.dataset.active = 'true';
 
                             } else {
-                                // ← el else correcto, fuera de renderPage
-                                //Aqui se puede valida el limite de uso de la IA, si el error es por limite alcanzado, entonces se puede mostrar un mensaje que diga "Has alcanzado el límite de uso gratuito. Por favor, espera 24 horas"
-                                //Muestra un svg
-                                if (data.message === "Has alcanzado el límite de uso gratuito. Por favor, espera 24 horas.") {
+                                //Aqui se puede valida el limite de uso de la IA
+                                if (data.message ===
+                                    "Has alcanzado el límite de uso gratuito. Por favor, espera 24 horas.") {
                                     grid.innerHTML = `
-                                    <div class="col-span-full flex flex-col items-center justify-center py-16 px-4">
-                                        <div class="max-w-2xl w-full bg-white rounded-2xl p-4 text-center">
-                                            <!-- Icono animado o estático -->
-                                            <div class="mx-auto flex items-center justify-center h-14 w-14 rounded-full bg-amber-50 mb-6">
-                                                <svg class="h-8 w-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                </svg>
-                                            </div>
-                                            
-                                            <h3 class="text-xl font-bold text-slate-800 mb-2">¡Límite diario alcanzado!</h3>
-                                            <p class="text-slate-600 leading-relaxed">
-                                                Has aprovechado todas tus consultas gratuitas por hoy. Para mantener la calidad del servicio, por favor vuelve en <span class="font-bold text-amber-600">24 horas</span>.
-                                            </p>
+                                <div class="col-span-full flex flex-col items-center justify-center py-16 px-4">
+                                    <div class="max-w-2xl w-full bg-white rounded-2xl p-4 text-center">
+                                        <div class="mx-auto flex items-center justify-center h-14 w-14 rounded-full bg-amber-50 mb-6">
+                                            <svg class="h-8 w-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
                                         </div>
+                                        <h3 class="text-xl font-bold text-slate-800 mb-2">¡Límite diario alcanzado!</h3>
+                                        <p class="text-slate-600 leading-relaxed">
+                                            Has aprovechado todas tus consultas gratuitas por hoy. Por favor vuelve en <span class="font-bold text-amber-600">24 horas</span>.
+                                        </p>
                                     </div>
-                                `;
+                                </div>
+                            `;
                                 } else {
-                                grid.innerHTML = `
-                                    <div class="col-span-full flex flex-col items-center justify-center py-16 text-red-400">
-                                        <p class="text-sm font-medium">Error: ${data.message}</p>
-                                    </div>
-                                `;
+                                    grid.innerHTML = `
+                                        <div class="col-span-full flex flex-col items-center justify-center py-16 text-red-400">
+                                            <p class="text-sm font-medium">Error: ${data.message}</p>
+                                        </div>
+                                    `;
+                                }
                             }
                         })
                         .catch(error => {
                             console.error('Error:', error);
                             grid.innerHTML = `
-                            <div class="col-span-full flex flex-col items-center justify-center py-16 text-red-400">
-                                <p class="text-sm font-medium">Error de conexión. Intenta de nuevo.</p>
-                            </div>
-                        `;
-                        }).finally(() => {
+                        <div class="col-span-full flex flex-col items-center justify-center py-16 text-red-400">
+                            <p class="text-sm font-medium">Error de conexión. Intenta de nuevo.</p>
+                        </div>
+                    `;
+                        })
+                        .finally(() => {
                             // Reactiva el botón al terminar
                             btnGen.disabled = false;
                             btnGen.textContent = 'Generar Flashcards en ' + language;
@@ -536,15 +533,16 @@
                         });
                 });
 
-                const flags = document.querySelectorAll('.flag-btn');
-                const input = document.getElementById('idioma');
-                const btnGen = document.getElementById('btn-generar');
+                // Configurar listeners de idiomas FUERA del evento submit
+                let flagsElements = document.querySelectorAll('.flag-btn');
+                let inputIdioma = document.getElementById('idioma');
+                let btnGenerarFlashcards = document.getElementById('btn-generar');
 
-                flags.forEach(btn => {
+                flagsElements.forEach(btn => {
                     btn.addEventListener('click', () => {
 
                         // Quita selección anterior
-                        flags.forEach(b => {
+                        flagsElements.forEach(b => {
                             b.classList.remove('border-[#0e76b3]', 'bg-blue-100');
                             b.querySelector('span.text-xs').classList.remove('text-[#0e76b3]');
                         });
@@ -554,12 +552,12 @@
                         btn.querySelector('span.text-xs').classList.add('text-[#0e76b3]');
 
                         // Guarda el valor en el input hidden
-                        input.value = btn.dataset.idioma;
+                        inputIdioma.value = btn.dataset.idioma;
 
                         // Activa el botón
-                        btnGen.disabled = false;
-                        btnGen.textContent = 'Generar Flashcards en ' + btn.dataset.idioma;
-                        btnGen.style.background = 'linear-gradient(90deg, #0e76b3 0%, #3bc569 100%)';
+                        btnGenerarFlashcards.disabled = false;
+                        btnGenerarFlashcards.textContent = 'Generar Flashcards en ' + btn.dataset.idioma;
+                        btnGenerarFlashcards.style.background = 'linear-gradient(90deg, #0e76b3 0%, #3bc569 100%)';
                     });
                 });
 
@@ -623,7 +621,8 @@
                 }
 
                 // Cambia el botón a estado de carga
-                const btn = document.getElementById('btn-guardar'); btn.disabled = true; btn.textContent = 'Guardando...';
+                const btn = document.getElementById('btn-guardar'); btn.disabled = true; btn.textContent =
+                'Guardando...';
 
                 fetch('{{ route('flashcards.save') }}', {
                     method: 'POST',
@@ -642,7 +641,8 @@
                 .then(data => {
                     if (data.ok) {
                         window.location.href = '{{ route('flashcards.mis') }}';
-                        currentFlashcards = data.flashcards; // Actualiza el array global con las flashcards guardadas.
+                        currentFlashcards = data
+                            .flashcards; // Actualiza el array global con las flashcards guardadas.
                     } else {
                         alert('Error al guardar: ' + data.message);
                         btn.disabled = false;
