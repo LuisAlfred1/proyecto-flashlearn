@@ -533,6 +533,25 @@
                         });
                 });
 
+                const btnLimpiar = document.getElementById('btn-limpiar');
+                btnLimpiar.addEventListener('click', function() {
+                    // Limpiar la cuadrícula de flashcards
+                    document.getElementById('flashcards-grid').innerHTML = '';
+                    // Ocultar el header y controles de paginación
+                    document.getElementById('cards-header').classList.add('hidden');
+                    document.getElementById('pagination').classList.add('hidden');
+                    // Limpiar el formulario
+                    document.getElementById('tema').value = '';
+                    document.getElementById('idioma').value = '';
+                    // Reiniciar la variable global de flashcards
+                    currentFlashcards = [];
+                    // Reiniciar el botón de generar
+                    const btnGen = document.getElementById('btn-generar');
+                    btnGen.disabled = true;
+                    btnGen.textContent = 'Selecciona un idioma para continuar';
+                    btnGen.style.background = '';
+                });
+
                 // Configurar listeners de idiomas FUERA del evento submit
                 let flagsElements = document.querySelectorAll('.flag-btn');
                 let inputIdioma = document.getElementById('idioma');

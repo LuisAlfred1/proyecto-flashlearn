@@ -1,20 +1,20 @@
 {{-- resources/views/components/hero.blade.php --}}
 
-<div class="pt-14 gradient" x-data="{ visible: false }" x-init="setTimeout(() => visible = true, 100)">
+<div class="pt-14 gradient">
     <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 flex flex-wrap flex-col md:flex-row items-center">
-        
+
         {{-- Columna izquierda --}}
-        <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left"
-             x-show="visible"
-             x-transition:enter="transition ease-out duration-700"
-             x-transition:enter-start="opacity-0 translate-x-[-30px]"
-             x-transition:enter-end="opacity-100 translate-x-0">
-            
-            <p class="uppercase tracking-widest text-sm font-semibold text-white/80 w-full mb-2">
+        <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left" x-show="showLeft"
+            x-transition:enter="transition ease-out duration-900" x-transition:enter-start="opacity-0 -translate-x-12"
+            x-transition:enter-end="opacity-100 translate-x-0">
+
+            <p class="uppercase tracking-widest text-sm font-semibold text-white/80 w-full mb-2 animate-pulse">
                 Aprende idiomas con IA
             </p>
             <h1 class="my-4 text-5xl font-bold leading-tight text-white">
-                Vocabulario a tu medida, <span class="text-yellow-300">en segundos</span>
+                Vocabulario a tu medida, <span
+                    class="bg-linear-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">en
+                    segundos</span>
             </h1>
             <p class="leading-normal text-xl text-white/90 mb-8">
                 Escribe un tema, elige tu idioma y FlashLearn genera 10 tarjetas de vocabulario personalizadas listas
@@ -22,13 +22,13 @@
             </p>
             <div class="flex flex-col sm:flex-row gap-3 mx-auto lg:mx-0">
                 <a href="/flashcards"
-                    class="cursor-pointer bg-white text-gray-800 font-bold rounded-full py-4 px-8 shadow-lg transform transition hover:scale-105 duration-300 ease-in-out">
+                    class="cursor-pointer bg-white text-gray-800 font-bold rounded-full py-4 px-8 shadow-lg transform transition hover:scale-105 hover:shadow-2xl duration-300 ease-in-out">
                     Generar mis flashcards
                 </a>
-                <button
-                    class="cursor-pointer border-2 border-white/60 text-white font-semibold rounded-full py-4 px-8 hover:bg-white/10 transition duration-300">
+                <a href="#info"
+                    class="cursor-pointer border-2 border-white/60 text-white font-semibold rounded-full py-4 px-8 hover:bg-white/20 hover:border-white transition duration-300">
                     Ver cómo funciona
-                </button>
+                </a>
             </div>
 
             {{-- Social proof --}}
@@ -38,13 +38,12 @@
         </div>
 
         {{-- Columna derecha --}}
-        <div class="w-full md:w-3/5 py-16 text-center"
-             x-show="visible"
-             x-transition:enter="transition ease-out duration-700 delay-200"
-             x-transition:enter-start="opacity-0 translate-x-[30px] scale-95"
-             x-transition:enter-end="opacity-100 translate-x-0 scale-100">
-            
-            <img class="w-full md:w-5/5 z-50 drop-shadow-2xl" src="{{ asset('images/heroNuevo.png') }}"
+        <div class="w-full md:w-3/5 py-16 text-center" x-show="showRight"
+            x-transition:enter="transition ease-out duration-900"
+            x-transition:enter-start="opacity-0 translate-x-12 scale-90"
+            x-transition:enter-end="opacity-100 translate-x-0 scale-100">
+
+            <img class="w-full md:w-5/5 z-50 drop-shadow-2xl rounded-lg" src="{{ asset('images/heroNuevo.png') }}"
                 alt="FlashLearn - Tarjetas de vocabulario con IA" />
         </div>
     </div>
