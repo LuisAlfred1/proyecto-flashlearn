@@ -1,7 +1,6 @@
 {{-- resources/views/components/info.blade.php --}}
-
 <div class="bg-zinc-50 py-16 px-4 md:px-8" x-data="{ titleVisible: false }" x-intersect="titleVisible = true">
-    <div class="max-w-6xl mx-auto">
+    <div id="info" class="max-w-6xl mx-auto">
 
         {{-- Título principal con gradiente (animado) --}}
         <div class="text-center mb-12" x-show="titleVisible" x-transition:enter="transition ease-out duration-700"

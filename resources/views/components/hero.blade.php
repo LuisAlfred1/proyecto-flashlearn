@@ -13,7 +13,7 @@
             </p>
             <h1 class="my-4 text-5xl font-bold leading-tight text-white">
                 Vocabulario a tu medida, <span
-                    class="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">en
+                    class="bg-linear-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">en
                     segundos</span>
             </h1>
             <p class="leading-normal text-xl text-white/90 mb-8">
@@ -22,13 +22,13 @@
             </p>
             <div class="flex flex-col sm:flex-row gap-3 mx-auto lg:mx-0">
                 <a href="/flashcards"
-                    class="cursor-pointer bg-white text-gray-800 font-bold rounded-full py-4 px-8 shadow-lg transform transition hover:scale-110 hover:shadow-2xl duration-300 ease-in-out">
+                    class="cursor-pointer bg-white text-gray-800 font-bold rounded-full py-4 px-8 shadow-lg transform transition hover:scale-105 hover:shadow-2xl duration-300 ease-in-out">
                     Generar mis flashcards
                 </a>
-                <button
+                <a href="#info"
                     class="cursor-pointer border-2 border-white/60 text-white font-semibold rounded-full py-4 px-8 hover:bg-white/20 hover:border-white transition duration-300">
                     Ver cómo funciona
-                </button>
+                </a>
             </div>
 
             {{-- Social proof --}}
