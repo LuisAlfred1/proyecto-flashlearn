@@ -14,8 +14,11 @@
                 {{-- Logo e Ilustración --}}
                 <div class="text-center mb-6 w-full flex flex-col items-center">
                     <div class="flex justify-center items-center mb-6">
-                        <img class="w-full max-w-[400px] object-contain" src="{{ asset('images/heroNuevo.png') }}"
-                            alt="FlashLearn - Tarjetas de vocabulario con IA" />
+                        <picture>
+                            <source srcset="{{ asset('images/heroNuevo.webp') }}" type="image/webp">
+                            <img class="w-80 object-contain" src="{{ asset('images/heroNuevo.png') }}"
+                                alt="FlashLearn - Tarjetas de vocabulario con IA" />
+                        </picture>
                     </div>
                     <h1 class="text-4xl font-extrabold text-zinc-950 tracking-tight">Bienvenido</h1>
                     <p class="text-md text-zinc-600 mt-3">Inicia sesión para guardar y ver tus flashcards.</p>

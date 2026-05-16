@@ -13,7 +13,7 @@
             </p>
             <h1 class="my-4 text-5xl font-bold leading-tight text-white">
                 Vocabulario a tu medida, <span
-                    class="bg-linear-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">en
+                    class="bg-linear-to-r from-yellow-300 to-yellow-200 bg-clip-text text-transparent">en
                     segundos</span>
             </h1>
             <p class="leading-normal text-xl text-white/90 mb-8">
@@ -43,8 +43,11 @@
             x-transition:enter-start="opacity-0 translate-x-12 scale-90"
             x-transition:enter-end="opacity-100 translate-x-0 scale-100">
 
-            <img class="w-full md:w-5/5 z-50 drop-shadow-2xl rounded-lg" src="{{ asset('images/heroNuevo.png') }}"
-                alt="FlashLearn - Tarjetas de vocabulario con IA" />
+            <picture>
+                <source srcset="{{ asset('images/heroNuevo.webp') }}" type="image/webp">
+                <img class="w-full md:w-5/5 z-50 drop-shadow-2xl" src="{{ asset('images/heroNuevo.png') }}"
+                    alt="FlashLearn - Aprende vocabulario con IA" width="800" height="600">
+            </picture>
         </div>
     </div>
 </div>
