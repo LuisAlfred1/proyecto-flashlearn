@@ -28,11 +28,29 @@
             <div class="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
 
                 <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6"
-                    style="background: linear-gradient(135deg, #0e76b320, #3bc56920)">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="#0e76b3" class="w-8 h-8">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                    style="background: linear-gradient(135deg, #0e76b315, #3bc56915)">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none" class="w-8 h-8">
+                        <defs>
+                            <linearGradient id="lockGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#0e76b3" />
+                                <stop offset="100%" stop-color="#3bc569" />
+                            </linearGradient>
+                        </defs>
+
+                        <!-- arco del candado -->
+                        <path d="M8 12 Q8 5 14 5 Q20 5 20 12" stroke="url(#lockGrad)" stroke-width="1.5" stroke-linecap="round"
+                            fill="none" />
+
+                        <!-- cuerpo -->
+                        <rect x="5" y="12" width="18" height="14" rx="4" fill="url(#lockGrad)" opacity="0.15" />
+                        <rect x="5" y="12" width="18" height="14" rx="4" stroke="url(#lockGrad)"
+                            stroke-width="1.5" fill="none" />
+
+                        <!-- punto y línea -->
+                        <circle cx="14" cy="19" r="2" fill="url(#lockGrad)" />
+                        <line x1="14" y1="21" x2="14" y2="23.5" stroke="url(#lockGrad)"
+                            stroke-width="1.5" stroke-linecap="round" />
                     </svg>
                 </div>
 
@@ -45,8 +63,7 @@
                 <div class="flex flex-col sm:flex-row gap-3">
                     <a href="{{ route('login') }}"
                         class="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold
-                               text-white transition-all hover:opacity-90 active:scale-95"
-                        style="background: linear-gradient(90deg, #0e76b3 0%, #3bc569 100%);">
+                               bg-blue-50 text-blue-500 hover:bg-blue-100 transition-all active:scale-95">
                         Iniciar sesión con Google
                     </a>
                     <a href="/flashcards"
@@ -102,7 +119,7 @@
                 </div>
 
                 {{-- Lista de sesiones (se llena con JS) --}}
-                <div id="sessions-list" class="hidden flex flex-col gap-4">
+                <div id="sessions-list" class="hidden flex flex-col gap-4 mb-8">
                 </div>
 
                 {{-- Detalle de una sesión (se muestra al hacer clic) --}}

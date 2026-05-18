@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FlashcardController;
-use App\Http\Controllers\SocialAuthController; 
+use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\FlashcardSessionController;
 
 //Luis: Añadí la ruta para la página de inicio (es una bienvenida a los usuarios)
@@ -14,7 +14,7 @@ Route::get('/', function () {
 Route::get('/flashcards', [FlashcardController::class, 'index']);
 
 //agregué la ruta para generar las flashcards, esta ruta se llamará desde el fetch en el archivo flashcards.blade.php
-Route::post('/generate', [FlashcardController::class, 'generate'])->name('flashcards.generate');
+Route::post('/generate', [FlashcardController::class, 'generate'])->middleware('throttle:generate')->name('flashcards.generate');
 
 //Ruta para la página de login, esta ruta se llamará desde el botón de login en la página de inicio
 Route::get('/login', function () {
@@ -34,7 +34,7 @@ Route::post('/logout', [SocialAuthController::class, 'logout'])->name('auth.logo
 
 //Ruta para la página de perfil, esta ruta se llamará desde el botón de perfil en la barra de navegación
 Route::get('/profile', function () {
-    return view('pages.profile'); 
+    return view('pages.profile');
 })->name('profile');
 
 //Ruta para la página de mis flashcards, esta ruta se llamará desde el botón de mis flashcards en la barra de navegación
