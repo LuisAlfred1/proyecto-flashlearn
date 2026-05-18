@@ -26,7 +26,13 @@ class FlashcardController extends Controller
     public function generate(Request $request)
     {
         $validated = $request->validate([
-            'tema' => 'required|string|max:100',
+            'tema' => [
+                'required',
+                'string',
+                'min:3',
+                'max:100',
+                'regex:/^[\p{L}\p{N}\s\-_.,áéíóúÁÉÍÓÚñÑüÜ]+$/u',
+            ],
             'language' => ['required', 'string', Rule::in($this->availableLanguages)],
         ]);
 
