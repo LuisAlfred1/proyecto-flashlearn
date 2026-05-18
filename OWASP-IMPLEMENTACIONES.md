@@ -107,6 +107,6 @@ Route::post('/generate', [FlashcardController::class, 'generate'])
 > Y se renderiza en la vista.
 
 ### Resultado
-![alt text](image.png)
+![alt text](image-2.png)
 
 ---
