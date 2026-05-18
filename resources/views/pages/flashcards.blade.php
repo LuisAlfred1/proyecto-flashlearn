@@ -405,6 +405,9 @@
                                     </div>
                                 `;
 
+                                // Ocultar paginación
+                                document.getElementById('pagination').classList.add('hidden');
+
                                 // Countdown de 60 segundos
                                 let seconds = 60;
                                 const countdown = document.getElementById('countdown');
