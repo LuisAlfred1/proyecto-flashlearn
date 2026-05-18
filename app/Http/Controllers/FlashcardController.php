@@ -33,7 +33,11 @@ class FlashcardController extends Controller
                 'max:100',
                 'regex:/^[\p{L}\p{N}\s\-_.,áéíóúÁÉÍÓÚñÑüÜ]+$/u',
             ],
-            'language' => ['required', 'string', Rule::in($this->availableLanguages)],
+            'language' => [
+                'required', 
+                'string', 
+                Rule::in($this->availableLanguages)
+            ],
         ]);
 
         $apiKey = env('GEMINI_API_KEY');
