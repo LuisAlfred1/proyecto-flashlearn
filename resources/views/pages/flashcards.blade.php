@@ -378,7 +378,50 @@
                                 language
                             })
                         })
-                        .then(response => response.json())
+                        .then(response => {
+                            if (response.status === 429) {
+                                grid.innerHTML = `
+                                    <div class="col-span-full flex flex-col items-center justify-center py-16 gap-4">
+                                        <div class="w-14 h-14 rounded-2xl flex items-center justify-center"
+                                            style="background: linear-gradient(135deg, #fef3c7, #fde68a);">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="#d97706" class="w-7 h-7">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                            </svg>
+                                        </div>
+                                        <div class="text-center">
+                                            <p class="text-sm font-semibold text-zinc-800">Demasiadas solicitudes</p>
+                                            <p class="text-xs text-zinc-500 mt-1 max-w-xs">
+                                                Alcanzaste el límite de generaciones por minuto.
+                                                Espera un momento e intenta de nuevo.
+                                            </p>
+                                        </div>
+                                        <div id="cooldown-timer"
+                                            class="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-50 border border-amber-200">
+                                            <span class="text-xs font-medium text-amber-700">Disponible en</span>
+                                            <span id="countdown" class="text-sm font-bold text-amber-700">60s</span>
+                                        </div>
+                                    </div>
+                                `;
+
+                                // Countdown de 60 segundos
+                                let seconds = 60;
+                                const countdown = document.getElementById('countdown');
+                                const timer = setInterval(() => {
+                                    seconds--;
+                                    countdown.textContent = seconds + 's';
+                                    if (seconds <= 0) {
+                                        clearInterval(timer);
+                                        document.getElementById('cooldown-timer').innerHTML =
+                                            '<span class="text-xs font-medium text-emerald-600">✓ Ya puedes generar de nuevo</span>';
+                                    }
+                                }, 1000);
+
+                                throw new Error('Rate limited');
+                            }
+                            return response.json();
+                        })
                         .then(data => {
                             if (data.ok) {
                                 console.log('¡Generado con éxito!', data);
@@ -518,6 +561,10 @@
                             }
                         })
                         .catch(error => {
+                            // Si es error de rate limit, no mostrar nada (ya fue mostrado)
+                            if (error.message === 'Rate limited') {
+                                return;
+                            }
                             console.error('Error:', error);
                             grid.innerHTML = `
                         <div class="col-span-full flex flex-col items-center justify-center py-16 text-red-400">
