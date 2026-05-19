@@ -25,10 +25,25 @@ class FlashcardController extends Controller
 
     public function generate(Request $request)
     {
+        //Se valida el input con regex estricta para prevenir Prompt Injection (A05:2025).
         $validated = $request->validate([
-            'tema' => 'required|string|max:100',
-            'language' => ['required', 'string', Rule::in($this->availableLanguages)],
+            'tema' => [
+                'required',
+                'string',
+                'min:3',
+                'max:100',
+                'regex:/^[\p{L}\p{N}\s\-_.,áéíóúÁÉÍÓÚñÑüÜ]+$/u',
+            ],
+            'language' => [
+                'required',
+                'string',
+                Rule::in($this->availableLanguages)
+            ],
         ]);
+
+        //Se sanitiza el input antes de insertarlo en el prompt para prevenir Prompt Injection.
+        $tema   = strip_tags(trim($validated['tema']));
+        $idioma = strip_tags(trim($validated['language']));
 
         $apiKey = env('GEMINI_API_KEY');
 
@@ -57,9 +72,10 @@ class FlashcardController extends Controller
 
         $promptTemplate = file_get_contents($promptPath);
 
+        //Se usan las variables sanitizadas en lugar de $validated para evitar Prompt Injection.
         $prompt = str_replace(
             ['{{tema}}', '{{idioma}}'],
-            [$validated['tema'], $validated['language']],
+            [$tema, $idioma],
             $promptTemplate
         );
 
@@ -129,8 +145,8 @@ class FlashcardController extends Controller
 
         return response()->json([
             'ok' => true,
-            'tema' => $validated['tema'],
-            'language' => $validated['language'],
+            'tema' => $tema,
+            'language' => $idioma,
             'idiomas_disponibles' => $this->availableLanguages,
             'flashcards' => $flashcards
         ]);
