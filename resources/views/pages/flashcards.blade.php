@@ -557,7 +557,9 @@
                                 } else {
                                     grid.innerHTML = `
                                         <div class="col-span-full flex flex-col items-center justify-center py-16 text-red-400">
-                                            <p class="text-sm font-medium">Error: ${data.message}</p>
+                                            <div class="max-w-sm text-center w-full border-2 border-red-400 bg-red-50 rounded-xl p-6">
+                                                <p class="text-sm font-medium">Error: ${data.message}</p>
+                                            </div>
                                         </div>
                                     `;
                                 }

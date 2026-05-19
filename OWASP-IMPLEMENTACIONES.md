@@ -67,6 +67,10 @@ $tema   = strip_tags(trim($validated['tema']));
 $idioma = strip_tags(trim($validated['language']));
 ```
 
+### Resultado
+
+![alt text](image.png)
+
 ---
 
 ## A07:2025 — Fallos de identificación y autenticación (Rate Limiting)
