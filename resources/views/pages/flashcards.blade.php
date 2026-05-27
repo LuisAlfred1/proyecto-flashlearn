@@ -407,6 +407,8 @@
 
                                 // Ocultar paginación
                                 document.getElementById('pagination').classList.add('hidden');
+                                // Ocultar header
+                                document.getElementById("cards-header").classList.add('hidden');
 
                                 // Countdown de 60 segundos
                                 let seconds = 60;
