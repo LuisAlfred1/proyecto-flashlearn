@@ -31,7 +31,9 @@
         @yield('content')
 
     </main>
+    
     {{-- =================== FIN CONTENIDO =================== --}}
+    <x-footer />
 
     {{-- Para utilzar scripts en las demás páginas --}}
     @stack('scripts')
