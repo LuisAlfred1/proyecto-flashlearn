@@ -57,10 +57,7 @@
                         value="{{ old('tema') }}"
                         class="w-full rounded-2xl border-2 px-5 py-4 text-sm text-zinc-900
                        placeholder:text-zinc-400 outline-none transition-all duration-200
-                       focus:shadow-lg
-                       @if ($errors->has('tema')) border-red-500 bg-red-50 focus:border-red-600 focus:ring-2 focus:ring-red-200
-                       @else
-                           border-green-700 shadow-md shadow-green-300 focus:border-[#2f9952] @endif" />
+                       focus:shadow-lg border-green-700 shadow-md shadow-green-300 focus:border-[#2f9952]" />
                 </div>
 
                 {{-- Selector de idioma con banderas --}}
@@ -597,6 +594,56 @@
                             btnGen.style.background = 'linear-gradient(90deg, #0e76b3 0%, #3bc569 100%)';
                         });
                 });
+
+                const temaInput = document.getElementById('tema');
+
+                if (temaInput) {
+                    const validPattern = /^[\p{L}\p{N}\s\-_.,áéíóúÁÉÍÓÚñÑüÜ]*$/u;
+
+                    // Función para actualizar el estado del input
+                    function updateInputState() {
+                        const value = temaInput.value;
+                        const existingError = temaInput.parentElement.querySelector('.input-error-message');
+                        if (existingError) existingError.remove();
+
+                        // Remover todas las clases de estado primero
+                        temaInput.classList.remove('border-red-500', 'bg-red-50', 'focus:border-red-600', 'focus:ring-2',
+                            'focus:ring-red-200');
+                        temaInput.classList.add('border-green-700', 'shadow-md', 'shadow-green-300', 'focus:border-[#2f9952]');
+
+                        // Si el input está vacío, mantener estado neutro (verde)
+                        if (value.length === 0) {
+                            return;
+                        }
+
+                        // Si hay caracteres inválidos
+                        if (!validPattern.test(value)) {
+                            temaInput.classList.remove('border-green-700', 'shadow-md', 'shadow-green-300',
+                                'focus:border-[#2f9952]');
+                            temaInput.classList.add('border-red-500', 'bg-red-50', 'focus:border-red-600', 'focus:ring-2',
+                                'focus:ring-red-200');
+
+                            const errorMsg = document.createElement('div');
+                            errorMsg.className =
+                                'input-error-message mt-2 flex items-center gap-2 px-4 py-2 bg-red-50 border border-red-300 rounded-lg';
+                            errorMsg.innerHTML = `
+                                <svg class="w-5 h-5 text-red-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                </svg>
+                                <p class="text-sm text-red-700 font-medium">Carácter inválido. Solo se permiten: letras, números, espacios, - _ . y ,</p>
+                            `;
+                            temaInput.parentElement.appendChild(errorMsg);
+                        }
+                    }
+
+                    // Event listeners
+                    temaInput.addEventListener('input', updateInputState);
+                    temaInput.addEventListener('change', updateInputState);
+                    temaInput.addEventListener('blur', updateInputState);
+
+                    // Actualizar el estado al cargar si hay valor previo
+                    updateInputState();
+                }
 
                 const btnLimpiar = document.getElementById('btn-limpiar');
                 btnLimpiar.addEventListener('click', function() {
