@@ -25,6 +25,35 @@
             </div>
         </div>
 
+        {{-- Modal para ajustar velocidad de voz --}}
+        <div id="speed-modal"
+            class="hidden fixed inset-0 bg-black/60 bg-opacity-50 flex items-center justify-center p-4 z-60">
+            <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm">
+                <h2 class="text-lg font-bold text-zinc-900 mb-4">Ajustar velocidad de voz</h2>
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <button
+                        class="speed-option flex items-center justify-center py-3 px-4 rounded-lg border-2 border-zinc-200 hover:border-[#0e76b3] hover:bg-blue-50 transition-all font-medium text-sm"
+                        data-speed="0.25">
+                        0.25x <span class="text-xs text-zinc-500 ml-1">(Muy lento)</span>
+                    </button>
+                    <button
+                        class="speed-option flex items-center justify-center py-3 px-4 rounded-lg border-2 border-zinc-200 hover:border-[#0e76b3] hover:bg-blue-50 transition-all font-medium text-sm"
+                        data-speed="0.5">
+                        0.50x <span class="text-xs text-zinc-500 ml-1">(lento)</span>
+                    </button>
+                    <button
+                        class="speed-option flex items-center justify-center py-3 px-4 rounded-lg border-2 border-[#0e76b3] bg-blue-50 font-medium text-sm"
+                        data-speed="1">
+                        1x <span class="text-xs text-zinc-500 ml-1">(Normal)</span>
+                    </button>
+                </div>
+                <button id="close-speed-modal"
+                    class="w-full px-4 py-2 bg-zinc-200 text-zinc-700 rounded-lg hover:bg-zinc-300 transition-all font-medium">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+
         {{-- Titulo de pagina --}}
         <div class="text-center mb-8 md:mb-8">
             <h1 class="text-2xl md:text-4xl font-bold text-zinc-900">Genera tus Flashcards</h1>
@@ -167,12 +196,19 @@
                 {{-- Derecha: botones con iconos --}}
                 <div class="flex items-center gap-2">
 
-                    {{-- Guardar --}}
+                    {{-- Ajustar velocidad de voz --}}
+                    <button id="btn-ajustar-voz"
+                        class="flex items-center gap-1.5 border border-zinc-300 px-3 py-2 rounded-xl text-xs font-medium
+                        text-zinc-600 hover:text-[#0e76b3] hover:bg-blue-50 transition-all duration-200 active:scale-95 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+                        </svg>
+                        <span id="speed-button-text">Velocidad de voz (1x)</span>
+                    </button>
 
-                    {{-- Después se hará una validación, si el usuario se autentica, entonces los flashcards serán guardados
-                        y si no, entonces se le redirigirá a la página de login para que pueda acceder a esta función. Por eso el href apunta a login, pero solo se activará si no está autenticado.
-                        si el usuario no quiere autenticarse, entonces se redigira a la página de inicio sin guardar, pero si se autentica, entonces se guardará y se redirigirá a la página de flashcards.
-                    --}}
+                    {{-- Guardar --}}
                     <button id="btn-guardar"
                         class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium
                         text-white transition-all duration-200 hover:opacity-90 active:scale-95 cursor-pointer bg-green-600 hover:bg-green-700">
@@ -693,6 +729,8 @@
                 });
 
                 // --- Web Speech API ---
+                let voiceSpeed = 1; // Variable global para la velocidad de voz (por defecto 1 = normal)
+
                 const langCodeMap = {
                     'Inglés': 'en-US',
                     'Francés': 'fr-FR',
@@ -714,11 +752,58 @@
 
                     const utterance = new SpeechSynthesisUtterance(text);
                     utterance.lang = langCodeMap[idioma] ?? 'en-US';
-                    utterance.rate = 0.7; // velocidad (1 = normal, 0.9 = un poco más lento)
+                    utterance.rate = voiceSpeed; // Usa la velocidad almacenada en la variable global
                     utterance.pitch = 1; // tono
 
                     window.speechSynthesis.speak(utterance);
                 }
+
+                // --- Modal de velocidad de voz ---
+                const speedModal = document.getElementById('speed-modal');
+                const btnAjustarVoz = document.getElementById('btn-ajustar-voz');
+                const closeSpeedModal = document.getElementById('close-speed-modal');
+                const speedOptions = document.querySelectorAll('.speed-option');
+
+                btnAjustarVoz.addEventListener('click', () => {
+                    speedModal.classList.remove('hidden');
+                });
+
+                closeSpeedModal.addEventListener('click', () => {
+                    speedModal.classList.add('hidden');
+                });
+
+                speedOptions.forEach(button => {
+                    button.addEventListener('click', () => {
+                        // Remover selección anterior
+                        speedOptions.forEach(btn => {
+                            btn.classList.remove('border-[#0e76b3]', 'bg-blue-50');
+                            btn.classList.add('border-zinc-200');
+                        });
+
+                        // Marcar el seleccionado
+                        button.classList.add('border-[#0e76b3]', 'bg-blue-50');
+                        button.classList.remove('border-zinc-200');
+
+                        // Guardar la velocidad seleccionada
+                        voiceSpeed = parseFloat(button.dataset.speed);
+
+                        // Actualizar el texto del botón
+                        const speedText = button.dataset.speed;
+                        const displayText = speedText === '1' ? 'Velocidad de voz (1x - Normal)' :
+                            `Velocidad de voz (${speedText}x)`;
+                        document.getElementById('speed-button-text').textContent = displayText;
+
+                        // Cerrar el modal automáticamente
+                        speedModal.classList.add('hidden');
+                    });
+                });
+
+                // Cerrar modal al presionar fuera
+                speedModal.addEventListener('click', (e) => {
+                    if (e.target === speedModal) {
+                        speedModal.classList.add('hidden');
+                    }
+                });
 
                 // --- Lógica del botón Guardar ---
                 document.getElementById('btn-guardar').addEventListener('click', function() {
