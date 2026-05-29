@@ -23,6 +23,35 @@
             </div>
         </div>
 
+        {{-- Modal para ajustar velocidad de voz --}}
+        <div id="speed-modal"
+            class="hidden fixed inset-0 bg-black/60 bg-opacity-50 flex items-center justify-center p-4 z-60">
+            <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm">
+                <h2 class="text-lg font-bold text-zinc-900 mb-4">Ajustar velocidad de voz</h2>
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <button
+                        class="speed-option flex items-center justify-center py-3 px-4 rounded-lg border-2 border-zinc-200 hover:border-[#0e76b3] hover:bg-blue-50 transition-all font-medium text-sm"
+                        data-speed="0.25">
+                        0.25x <span class="text-xs text-zinc-500 ml-1">(Muy Lento)</span>
+                    </button>
+                    <button
+                        class="speed-option flex items-center justify-center py-3 px-4 rounded-lg border-2 border-zinc-200 hover:border-[#0e76b3] hover:bg-blue-50 transition-all font-medium text-sm"
+                        data-speed="0.50">
+                        0.50x <span class="text-xs text-zinc-500 ml-1">(Lento)</span>
+                    </button>
+                    <button
+                        class="speed-option flex items-center justify-center py-3 px-4 rounded-lg border-2 border-[#0e76b3] bg-blue-50 font-medium text-sm"
+                        data-speed="1">
+                        1x <span class="text-xs text-zinc-500 ml-1">(Normal)</span>
+                    </button>
+                </div>
+                <button id="close-speed-modal"
+                    class="w-full px-4 py-2 bg-zinc-200 text-zinc-700 rounded-lg hover:bg-zinc-300 transition-all font-medium">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+
         {{-- ===== ESTADO: NO AUTENTICADO ===== --}}
         @guest
             <div class="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
@@ -146,16 +175,30 @@
                                 <span id="detail-language" class="text-xs text-zinc-400"></span>
                             </div>
                         </div>
-                        <button id="btn-delete-session"
-                            class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium
-                                   bg-red-50 text-red-500 hover:bg-red-100 transition-all cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                            </svg>
-                            Eliminar sesión
-                        </button>
+                        <div class="flex items-center gap-2">
+                            {{-- Botón ajustar velocidad de voz --}}
+                            <button id="btn-ajustar-voz"
+                                class="flex items-center gap-1.5 border border-zinc-300 px-3 py-2 rounded-xl text-xs font-medium
+                                       text-zinc-600 hover:text-[#0e76b3] hover:bg-blue-50 transition-all duration-200 active:scale-95 cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+                                </svg>
+                                <span id="speed-button-text">Velocidad de voz (1x)</span>
+                            </button>
+                            {{-- Botón eliminar sesión --}}
+                            <button id="btn-delete-session"
+                                class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium
+                                       bg-red-50 text-red-500 hover:bg-red-100 transition-all cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                </svg>
+                                Eliminar
+                            </button>
+                        </div>
                     </div>
 
                     {{-- Grid de flashcards de la sesión --}}
@@ -172,6 +215,9 @@
     @auth
         @push('scripts')
             <script>
+                // Variable global para la velocidad de voz
+                let voiceSpeed = 1;
+
                 const flagMap = {
                     'Inglés': 'fi-us',
                     'Francés': 'fi-fr',
@@ -193,13 +239,70 @@
                 };
 
                 function speakText(text, idioma) {
-                    if (!window.speechSynthesis) return;
+                    if (!window.speechSynthesis) {
+                        alert('Tu navegador no soporta síntesis de voz.');
+                        return;
+                    }
+
+                    // Cancela cualquier voz que esté sonando
                     window.speechSynthesis.cancel();
+
                     const utterance = new SpeechSynthesisUtterance(text);
                     utterance.lang = langCodeMap[idioma] ?? 'en-US';
-                    utterance.rate = 0.9;
+                    utterance.rate = voiceSpeed; // Usa la velocidad almacenada en la variable global
+                    utterance.pitch = 1; // tono
+
                     window.speechSynthesis.speak(utterance);
                 }
+
+                // --- Modal de velocidad de voz ---
+                const speedModal = document.getElementById('speed-modal');
+                const btnAjustarVoz = document.getElementById('btn-ajustar-voz');
+                const closeSpeedModal = document.getElementById('close-speed-modal');
+                const speedOptions = document.querySelectorAll('.speed-option');
+
+                if (btnAjustarVoz) {
+                    btnAjustarVoz.addEventListener('click', () => {
+                        speedModal.classList.remove('hidden');
+                    });
+                }
+
+                closeSpeedModal.addEventListener('click', () => {
+                    speedModal.classList.add('hidden');
+                });
+
+                speedOptions.forEach(button => {
+                    button.addEventListener('click', () => {
+                        // Remover selección anterior
+                        speedOptions.forEach(btn => {
+                            btn.classList.remove('border-[#0e76b3]', 'bg-blue-50');
+                            btn.classList.add('border-zinc-200');
+                        });
+
+                        // Marcar el seleccionado
+                        button.classList.add('border-[#0e76b3]', 'bg-blue-50');
+                        button.classList.remove('border-zinc-200');
+
+                        // Guardar la velocidad seleccionada
+                        voiceSpeed = parseFloat(button.dataset.speed);
+
+                        // Actualizar el texto del botón
+                        const speedText = button.dataset.speed;
+                        const displayText = speedText === '1' ? 'Velocidad de voz (1x - Normal)' :
+                            `Velocidad de voz (${speedText}x)`;
+                        document.getElementById('speed-button-text').textContent = displayText;
+
+                        // Cerrar el modal automáticamente
+                        speedModal.classList.add('hidden');
+                    });
+                });
+
+                // Cerrar modal al presionar fuera
+                speedModal.addEventListener('click', (e) => {
+                    if (e.target === speedModal) {
+                        speedModal.classList.add('hidden');
+                    }
+                });
 
                 // --- Cargar sesiones al entrar ---
                 async function loadSessions() {
