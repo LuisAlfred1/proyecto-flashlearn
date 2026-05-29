@@ -41,15 +41,26 @@
 
                 {{-- Tema --}}
                 <div class="flex-1">
+                    {{-- Mensaje de error arriba del input --}}
+                    @error('tema')
+                        <div class="mb-2 flex items-center gap-2 px-4 py-2 bg-red-50 border border-red-300 rounded-lg">
+                            <svg class="w-5 h-5 text-red-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <p class="text-sm text-red-700 font-medium">{{ $message }}</p>
+                        </div>
+                    @enderror
+
                     <input type="text" id="tema" name="tema" placeholder="ej: Saludo de bienvenida"
                         value="{{ old('tema') }}"
-                        class="w-full rounded-2xl border-2 border-green-700 px-5 py-4 text-sm text-zinc-900
+                        class="w-full rounded-2xl border-2 px-5 py-4 text-sm text-zinc-900
                        placeholder:text-zinc-400 outline-none transition-all duration-200
-                       focus:border-[#2f9952] shadow-md shadow-green-300
-                       @error('tema') border-red-400 @enderror" />
-                    @error('tema')
-                        <p class="mt-1.5 text-xs text-red-500">{{ $message }}</p>
-                    @enderror
+                       focus:shadow-lg
+                       @if ($errors->has('tema')) border-red-500 bg-red-50 focus:border-red-600 focus:ring-2 focus:ring-red-200
+                       @else
+                           border-green-700 shadow-md shadow-green-300 focus:border-[#2f9952] @endif" />
                 </div>
 
                 {{-- Selector de idioma con banderas --}}

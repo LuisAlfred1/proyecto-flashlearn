@@ -39,6 +39,13 @@ class FlashcardController extends Controller
                 'string',
                 Rule::in($this->availableLanguages)
             ],
+        ], [
+            'tema.required' => 'El tema es obligatorio.',
+            'tema.min' => 'El tema debe tener al menos 3 caracteres.',
+            'tema.max' => 'El tema no puede exceder 100 caracteres.',
+            'tema.regex' => 'El tema contiene caracteres no válidos. Solo se permiten letras, números, espacios, guiones, guiones bajos, puntos y comas.',
+            'language.required' => 'Debes seleccionar un idioma.',
+            'language.in' => 'El idioma seleccionado no es válido.',
         ]);
 
         //Se sanitiza el input antes de insertarlo en el prompt para prevenir Prompt Injection.
